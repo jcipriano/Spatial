@@ -11,6 +11,8 @@ Spatial.GameView = function(el) {
   this.domEl;
   this.camera;
   this.scene;
+  
+  this.spatialObjs;
 };
 
 /**
@@ -20,6 +22,7 @@ Spatial.GameView.prototype.start = function() {
   // renderer
   this.renderer = new THREE.WebGLRenderer( { antialias: true } );
   this.renderer.setSize(this.width, this.height);
+  this.renderer.physicallyBasedShading = true;
   this.domEl.append(this.renderer.domElement);
   
   // scene
@@ -27,7 +30,13 @@ Spatial.GameView.prototype.start = function() {
   
   // camera
 	this.camera = new THREE.PerspectiveCamera( 60, this.width / this.height, 1, 100000 );
+	this.camera.setLens(85, 35);
 	this.camera.position.z = this.cameraDistance ;
+  
+  // light
+  var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
+  directionalLight.position.set(100, 0, 200).normalize();
+  this.scene.add(directionalLight);
   
   // window resize
   var that = this;
@@ -49,14 +58,24 @@ Spatial.GameView.prototype.buildSpatialObjs = function() {
   console.log('Spatial.GameView.prototype.renderSpatialObjs');
   
   this.group = new THREE.Object3D();
-  var so = new Spatial.SpatialObject3D();
-  this.group.add(so);
   this.scene.add(this.group);
-
-  //var material = new THREE.MeshBasicMaterial({ color: 0xCC0000 });
-  //var mesh = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 10), material);
-  //this.scene.add(mesh);
   
+  this.spatialObjs = [];
+  
+  var so1 = new Spatial.SpatialObject3D();
+  so1.position.x = -75;
+  this.group.add(so1);
+  this.spatialObjs.push(so1);
+  
+  var so2 = new Spatial.SpatialObject3D();
+  so2.position.x = 0;
+  this.group.add(so2);
+  this.spatialObjs.push(so2);
+  
+  var so3 = new Spatial.SpatialObject3D();
+  so3.position.x = 75;
+  this.group.add(so3);
+  this.spatialObjs.push(so3);
 };
 
 /**
@@ -77,8 +96,16 @@ Spatial.GameView.prototype.renderLoop = function() {
  **/
 Spatial.GameView.prototype.render = function() {
   
-  //this.group.rotation.x = this.group.rotation.x + 0.01;
-  this.group.rotation.y = this.group.rotation.y + 0.01;
+  //this.group.rotation.x = this.group.rotation.x + 0.003;
+  //this.group.rotation.y = this.group.rotation.y + 0.01;
+  var i = this.spatialObjs.length;
+  var spatialObj;
+  while(i--) {
+    spatialObj = this.spatialObjs[i];
+    spatialObj.rotation.x = spatialObj.rotation.x + 0.01;
+    spatialObj.rotation.y = spatialObj.rotation.y + 0.001;
+  }
+  
   
   // render
   this.renderer.render(this.scene, this.camera);
