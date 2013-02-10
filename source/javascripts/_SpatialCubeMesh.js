@@ -28,8 +28,8 @@ Spatial.SpatialCubeMesh.prototype.showWireframe = function() {
   this.add(this.wireframe);
 };
 
-Spatial.SpatialCubeMesh.prototype.clone = function() {
-  var cube = new Spatial.SpatialCubeMesh(this.color, this.size);
+Spatial.SpatialCubeMesh.prototype.clone = function(color) {
+  var cube = new Spatial.SpatialCubeMesh(color ? color : this.color, this.size);
   cube.position = this.position.clone();
   return cube;
 };

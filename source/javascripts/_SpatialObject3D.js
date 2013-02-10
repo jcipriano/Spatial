@@ -39,24 +39,23 @@ Spatial.SpatialObject3D.prototype.build = function(cubes) {
   var lastMesh;
   var i = 0;
   
+  var color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  
   // cloning?
   if(cubes){
     console.log('building clone');
     
     i = cubes.length;
     while(i--) {
-      mesh = cubes[i].clone();
+      mesh = cubes[i].clone(color);
       this.group.add(mesh);
       this.cubes.push(mesh);
-      console.log(mesh);
     }
     
     return;
   };
   
   // resume default build
-  var color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-  
   for(i; i<this.cubeLength; i++){
     mesh = new Spatial.SpatialCubeMesh(color, this.size);
     
