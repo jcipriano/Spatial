@@ -95,12 +95,12 @@ Spatial.GameView.prototype.buildSpatialObjs = function() {
   
   this.spatialObjs = [];
   
-  var so1 = new Spatial.SpatialObject3D(10, 10);
+  var so1 = new Spatial.Structure(10, 10);
   so1.showWireframe();
   this.group.add(so1);
   this.spatialObjs.push(so1);
   
-  var so2 = new Spatial.SpatialObject3D(10, 10);
+  var so2 = new Spatial.Structure(10, 10);
   so2.showWireframe();
   this.group.add(so2);
   this.spatialObjs.push(so2);

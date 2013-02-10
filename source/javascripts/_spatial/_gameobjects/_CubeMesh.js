@@ -1,9 +1,9 @@
-Spatial.SpatialCubeMesh = function(color, size) {
+Spatial.CubeMesh = function(color, size) {
   
   this.color = color;
   this.size = size;
   
-  this.geometry = new Spatial.SpatialCubeGeometry(size, size, size);
+  this.geometry = new Spatial.CubeGeometry(size, size, size);
   this.material = new THREE.MeshPhongMaterial( { 
     color: color, 
     ambient: color,
@@ -16,11 +16,11 @@ Spatial.SpatialCubeMesh = function(color, size) {
   this.wireframe;
 };
 
-Spatial.SpatialCubeMesh.prototype = new THREE.Mesh();
-Spatial.SpatialCubeMesh.prototype.constructor = THREE.SpatialCubeMesh;
-Spatial.SpatialCubeMesh.prototype.supr = THREE.Mesh.prototype;
+Spatial.CubeMesh.prototype = new THREE.Mesh();
+Spatial.CubeMesh.prototype.constructor = Spatial.CubeMesh;
+Spatial.CubeMesh.prototype.supr = THREE.Mesh.prototype;
 
-Spatial.SpatialCubeMesh.prototype.showWireframe = function() {
+Spatial.CubeMesh.prototype.showWireframe = function() {
   
   var material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true, wireframeLinewidth: 1 }); 
   
@@ -28,8 +28,8 @@ Spatial.SpatialCubeMesh.prototype.showWireframe = function() {
   this.add(this.wireframe);
 };
 
-Spatial.SpatialCubeMesh.prototype.clone = function(color) {
-  var cube = new Spatial.SpatialCubeMesh(color ? color : this.color, this.size);
+Spatial.CubeMesh.prototype.clone = function(color) {
+  var cube = new Spatial.CubeMesh(color ? color : this.color, this.size);
   cube.position = this.position.clone();
   return cube;
 };

@@ -1,5 +1,5 @@
-Spatial.SpatialObject3D = function(length, size, autoBuild) {
-  //console.log('Spatial.SpatialObject3D');
+Spatial.Structure = function(length, size, autoBuild) {
+  //console.log('Spatial.Structure');
   
   THREE.Object3D.call(this);
   
@@ -26,11 +26,11 @@ Spatial.SpatialObject3D = function(length, size, autoBuild) {
   }
 };
 
-Spatial.SpatialObject3D.prototype = new THREE.Object3D();
-Spatial.SpatialObject3D.prototype.constructor = Spatial.SpatialObject3D;
-Spatial.SpatialObject3D.prototype.supr = THREE.Object3D.prototype;
+Spatial.Structure.prototype = new THREE.Object3D();
+Spatial.Structure.prototype.constructor = Spatial.Structure;
+Spatial.Structure.prototype.supr = THREE.Object3D.prototype;
 
-Spatial.SpatialObject3D.prototype.build = function(cubes) {
+Spatial.Structure.prototype.build = function(cubes) {
   
   this.group = new THREE.Object3D();
   this.add(this.group);
@@ -57,7 +57,7 @@ Spatial.SpatialObject3D.prototype.build = function(cubes) {
   
   // resume default build
   for(i; i<this.cubeLength; i++){
-    mesh = new Spatial.SpatialCubeMesh(color, this.size);
+    mesh = new Spatial.CubeMesh(color, this.size);
     
     if(lastMesh){
       var emptyPos = this.getEmptyPositions(lastMesh.position);
@@ -73,7 +73,7 @@ Spatial.SpatialObject3D.prototype.build = function(cubes) {
   this.center();
 };
 
-Spatial.SpatialObject3D.prototype.center = function() {
+Spatial.Structure.prototype.center = function() {
   
   var i = this.cubes.length;
   var cube;
@@ -109,7 +109,7 @@ Spatial.SpatialObject3D.prototype.center = function() {
   }
 };
 
-Spatial.SpatialObject3D.prototype.showWireframe = function() {
+Spatial.Structure.prototype.showWireframe = function() {
   
   var i = this.cubes.length;
   var cube;
@@ -119,7 +119,7 @@ Spatial.SpatialObject3D.prototype.showWireframe = function() {
   }
 };
 
-Spatial.SpatialObject3D.prototype.getEmptyPositions = function(position) {
+Spatial.Structure.prototype.getEmptyPositions = function(position) {
   
   var availPos = [];
   
@@ -138,7 +138,7 @@ Spatial.SpatialObject3D.prototype.getEmptyPositions = function(position) {
   return availPos;
 };
 
-Spatial.SpatialObject3D.prototype.hasCubeAtPosition = function(position) {
+Spatial.Structure.prototype.hasCubeAtPosition = function(position) {
 
   var i = 0;
   var len = this.cubes.length;
@@ -151,8 +151,8 @@ Spatial.SpatialObject3D.prototype.hasCubeAtPosition = function(position) {
   return false;
 };
 
-Spatial.SpatialObject3D.prototype.clone = function() {
-  var so = new Spatial.SpatialObject3D(this.cubeLength, this.size, false);
+Spatial.Structure.prototype.clone = function() {
+  var so = new Spatial.Structure(this.cubeLength, this.size, false);
   so.build(this.cubes);
   return so;
 };
