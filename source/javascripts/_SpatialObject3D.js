@@ -1,12 +1,16 @@
-Spatial.SpatialObject3D = function() {
-  console.log('Spatial.SpatialObject3D');
+Spatial.SpatialObject3D = function(length, size, autoBuild) {
+  //console.log('Spatial.SpatialObject3D');
   
   THREE.Object3D.call(this);
   
+  this.width = 0;
+  this.height = 0;
+  this.depth = 0;
+  
   this.group;
   this.cubes;
-  this.size = 5;
-  this.cubeLength = 15;
+  this.size = size;
+  this.cubeLength = length;
   this.cubes = [];
   this.sides = [
     { side: "top", position: new THREE.Vector3( 0, this.size, 0 ) },
@@ -16,32 +20,45 @@ Spatial.SpatialObject3D = function() {
     { side: "left", position: new THREE.Vector3( -this.size, 0, 0 ) },
     { side: "right", position: new THREE.Vector3( this.size, 0, 0 ) }
   ];
-  this.build();
+  
+  if(autoBuild !== false) {
+    this.build();
+  }
 };
 
 Spatial.SpatialObject3D.prototype = new THREE.Object3D();
 Spatial.SpatialObject3D.prototype.constructor = Spatial.SpatialObject3D;
 Spatial.SpatialObject3D.prototype.supr = THREE.Object3D.prototype;
 
-Spatial.SpatialObject3D.prototype.build = function() {
-  
-  console.log(this);
+Spatial.SpatialObject3D.prototype.build = function(cubes) {
   
   this.group = new THREE.Object3D();
   this.add(this.group);
-
-  var material = new THREE.MeshPhongMaterial( { 
-    color: 0xFF0000, 
-    ambient: 0xFF0000,
-    specular: 0xFF2222,
-    shininess: 30
-  });
   
   var mesh;
   var lastMesh;
   var i = 0;
+  
+  // cloning?
+  if(cubes){
+    console.log('building clone');
+    
+    i = cubes.length;
+    while(i--) {
+      mesh = cubes[i].clone();
+      this.group.add(mesh);
+      this.cubes.push(mesh);
+      console.log(mesh);
+    }
+    
+    return;
+  };
+  
+  // resume default build
+  var color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  
   for(i; i<this.cubeLength; i++){
-    mesh = new THREE.Mesh(new THREE.CubeGeometry(this.size, this.size, this.size), material);
+    mesh = new Spatial.SpatialCubeMesh(color, this.size);
     
     if(lastMesh){
       var emptyPos = this.getEmptyPositions(lastMesh.position);
@@ -55,7 +72,6 @@ Spatial.SpatialObject3D.prototype.build = function() {
   }
   
   this.center();
-  this.showWireframe();
 };
 
 Spatial.SpatialObject3D.prototype.center = function() {
@@ -76,14 +92,14 @@ Spatial.SpatialObject3D.prototype.center = function() {
     maxZ = cube.position.z > maxZ ? cube.position.z : maxZ;
   }
   
-  var width = maxX - minX;
-  var offsetX = (width / 2) - Math.abs(minX);
+  this.width = maxX - minX;
+  var offsetX = (this.width / 2) - Math.abs(minX);
   
-  var height = maxY - minY;
-  var offsetY = (height / 2) - Math.abs(minY);
+  this.height = maxY - minY;
+  var offsetY = (this.height / 2) - Math.abs(minY);
   
-  var depth = maxZ - minZ;
-  var offsetZ = (depth / 2) - Math.abs(minZ);
+  this.depth = maxZ - minZ;
+  var offsetZ = (this.depth / 2) - Math.abs(minZ);
   
   var offsetPos = new THREE.Vector3(-offsetX, -offsetY, -offsetZ);
   
@@ -96,14 +112,11 @@ Spatial.SpatialObject3D.prototype.center = function() {
 
 Spatial.SpatialObject3D.prototype.showWireframe = function() {
   
-  var material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true, wireframeLinewidth: 1 }); 
-  
   var i = this.cubes.length;
+  var cube;
   while(i--) {
     cube = this.cubes[i];
-    wire = new THREE.Mesh(new THREE.CubeGeometry(this.size, this.size, this.size), material);
-    wire.position = cube.position.clone();
-    this.group.add(wire);
+    cube.showWireframe();
   }
 };
 
@@ -137,4 +150,10 @@ Spatial.SpatialObject3D.prototype.hasCubeAtPosition = function(position) {
   }
   
   return false;
+};
+
+Spatial.SpatialObject3D.prototype.clone = function() {
+  var so = new Spatial.SpatialObject3D(this.cubeLength, this.size, false);
+  so.build(this.cubes);
+  return so;
 };

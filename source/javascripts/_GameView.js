@@ -30,13 +30,32 @@ Spatial.GameView.prototype.start = function() {
   
   // camera
 	this.camera = new THREE.PerspectiveCamera( 60, this.width / this.height, 1, 100000 );
-	this.camera.setLens(85, 35);
-	this.camera.position.z = this.cameraDistance ;
+	//this.camera.setLens(85, 35);
+	this.camera.position.y = 0
+	this.camera.position.x = 0
+	this.camera.position.z = this.cameraDistance;
+	this.camera.lookAt(new THREE.Vector3(0,0,0));
   
   // light
   var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
-  directionalLight.position.set(100, 0, 200).normalize();
-  this.scene.add(directionalLight);
+  directionalLight.position.set(0, 0, 100);//.normalize();
+  //this.scene.add(directionalLight);
+  
+  var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
+  light.position.set(0, 0, 25);
+  this.scene.add( light );
+  
+  // skybox
+	var skyBoxMaterial = new THREE.MeshPhongMaterial( { 
+    color: 0x000000, 
+    ambient: 0x000000,
+    specular: 0xFFFFFF,
+    shininess: 1,
+    side: THREE.BackSide
+  });
+  
+  this.cube = new THREE.Mesh(new THREE.CubeGeometry(400, 125, 300), skyBoxMaterial);
+	this.scene.add(this.cube);
   
   // window resize
   var that = this;
@@ -62,20 +81,26 @@ Spatial.GameView.prototype.buildSpatialObjs = function() {
   
   this.spatialObjs = [];
   
-  var so1 = new Spatial.SpatialObject3D();
-  so1.position.x = -75;
+  var so1 = new Spatial.SpatialObject3D(10, 10);
+  so1.showWireframe();
   this.group.add(so1);
   this.spatialObjs.push(so1);
   
-  var so2 = new Spatial.SpatialObject3D();
-  so2.position.x = 0;
+  var so2 = new Spatial.SpatialObject3D(10, 10);
+  so2.showWireframe();
   this.group.add(so2);
   this.spatialObjs.push(so2);
   
-  var so3 = new Spatial.SpatialObject3D();
-  so3.position.x = 75;
+  var so3 = this.spatialObjs[Math.floor(Math.random() * this.spatialObjs.length)].clone(true);
+  so3.position.x = 125;
+  so3.showWireframe();
   this.group.add(so3);
   this.spatialObjs.push(so3);
+  
+  this.spatialObjs = Spatial.Util.shuffle(this.spatialObjs);
+  this.spatialObjs[0].position.x = -125;
+  this.spatialObjs[1].position.x = 0;
+  this.spatialObjs[2].position.x = 125;
 };
 
 /**
@@ -116,5 +141,5 @@ Spatial.GameView.prototype.render = function() {
  **/
 Spatial.GameView.prototype.onWindowResized = function( event ) {
 	this.renderer.setSize( window.innerWidth, window.innerHeight );
-	this.camera.projectionMatrix.makePerspective( 50, window.innerWidth / window.innerHeight, 1, 1100 );
+	this.camera.projectionMatrix.makePerspective( 60, window.innerWidth / window.innerHeight, 1, 1100 );
 }
