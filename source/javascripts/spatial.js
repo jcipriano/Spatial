@@ -11,4 +11,5 @@
 #= require "_spatial/_gameobjects/_StructureGroup"
 #= require "_spatial/_gameobjects/_CubeGeometry"
 #= require "_spatial/_gameobjects/_CubeMesh"
+#= require "_spatial/_gameobjects/_ParticleSystem"
 

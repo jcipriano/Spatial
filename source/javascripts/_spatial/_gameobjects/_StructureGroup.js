@@ -5,7 +5,7 @@ Spatial.StructureGroup = function(length) {
   this.length = length;
   this.group;
   this.spatialObjs;
-  
+  this.selections = [];
   this.build();
 };
 
@@ -22,13 +22,13 @@ Spatial.StructureGroup.prototype.build = function() {
   var str, lastStr;
   var i = 0, len = this.length-1;
   for(i; i<len; i++) {
-    // clone
-    if(lastStr){
-      str = lastStr.clone(true);
-    }
     // generate
-    else{
+    if(!lastStr){
       str = new Spatial.Structure(4, 10);
+    }
+    // clone
+    else{
+      str = lastStr.clone(true);
     }
     this.group.add(str);
     this.spatialObjs.push(str);
@@ -51,17 +51,52 @@ Spatial.StructureGroup.prototype.build = function() {
   i = 0, len = this.spatialObjs.length;
   for(i; i<len; i++) {
     str = this.spatialObjs[i];
-    str.showWireframe();
     str.position.x = startX + spacing * i;
+    str.showWireframe();
+    str.events.add(Spatial.Events.SELECTED, this.structureSelected, this);
+    str.events.add(Spatial.Events.DESELECTED, this.structureDeselected, this);
   }
+};
+
+Spatial.StructureGroup.prototype.structureSelected = function(data) {
+  Spatial.Util.addTo(this.selections, data.target);
+  
+  if(this.allFound()){
+    this.events.publish(Spatial.Events.SUCCESS);
+  }
+};
+
+Spatial.StructureGroup.prototype.structureDeselected = function(data) {
+  Spatial.Util.removeFrom(this.selections, data.target);
+  
+  if(this.allFound()){
+    this.events.publish(Spatial.Events.SUCCESS);
+  }
+};
+
+Spatial.StructureGroup.prototype.allFound = function() {
+  
+  if(this.selections.length !== this.length -1){
+    return false;
+  }
+  
+  var i = this.spatialObjs.length;
+  var str, lastStr;
+  while(i--) {
+    str = this.selections[i];
+    if(lastStr && !str.equals(lastStr)){
+      return false;
+    }
+    lastStr = str;
+
+  }
+  return true;
 };
 
 Spatial.StructureGroup.prototype.onRender = function() {
   var i = this.spatialObjs.length;
   var spatialObj;
   while(i--) {
-    spatialObj = this.spatialObjs[i];
-    spatialObj.rotation.x = spatialObj.rotation.x + 0.005;
-    spatialObj.rotation.y = spatialObj.rotation.y + 0.005;
+    this.spatialObjs[i].onRender();
   }
 };

@@ -1,7 +1,9 @@
 Spatial.Events = {
   CLICK: 'click',
-  SELECTED: 'selected'
-  DESELECTED: 'deselected'
+  SELECTED: 'selected',
+  DESELECTED: 'deselected',
+  SUCCESS: 'success',
+  FAILURE: 'failure'
 };
 
 Spatial.EventPublisher = function() {

@@ -3,12 +3,12 @@ Spatial.Structure = function(length, size, autoBuild) {
   THREE.Object3D.call(this);
   
   this.events = new Spatial.EventPublisher();
-  
+  this.particleSystem;
   this.width = 0;
   this.height = 0;
   this.depth = 0;
-  
-  this.group;
+  this.selected = false;
+  this.cubeGroup;
   this.cubes;
   this.size = size;
   this.cubeLength = length;
@@ -33,8 +33,11 @@ Spatial.Structure.prototype.supr = THREE.Object3D.prototype;
 
 Spatial.Structure.prototype.build = function(cubes) {
   
-  this.group = new THREE.Object3D();
-  this.add(this.group);
+  this.cubeGroup = new THREE.Object3D();
+  this.add(this.cubeGroup);
+  
+  //this.particleSystem = new Spatial.ParticleSystem();
+  //this.add(this.particleSystem)
   
   var mesh;
   var lastMesh;
@@ -49,7 +52,7 @@ Spatial.Structure.prototype.build = function(cubes) {
     i = cubes.length;
     while(i--) {
       mesh = cubes[i].clone(color, this);
-      this.group.add(mesh);
+      this.cubeGroup.add(mesh);
       this.cubes.push(mesh);
       Spatial.game.model.addStructureMesh(mesh);
     }
@@ -58,7 +61,8 @@ Spatial.Structure.prototype.build = function(cubes) {
   };
   
   // resume default build
-  for(i; i<this.cubeLength; i++){
+  i = this.cubeLength;
+  while(i--) {
     mesh = new Spatial.CubeMesh(color, this.size, this);
     
     if(lastMesh){
@@ -67,7 +71,7 @@ Spatial.Structure.prototype.build = function(cubes) {
       mesh.position = side.position;
     }
     
-    this.group.add(mesh);
+    this.cubeGroup.add(mesh);
     this.cubes.push(mesh);
     Spatial.game.model.addStructureMesh(mesh);
     lastMesh = mesh;
@@ -80,7 +84,7 @@ Spatial.Structure.prototype.build = function(cubes) {
     Spatial.Util.toRads(180),
     Spatial.Util.toRads(270)
   ];
-  this.group.rotation = new THREE.Vector3(Spatial.Util.randVal(degs), Spatial.Util.randVal(degs), Spatial.Util.randVal(degs));
+  this.cubeGroup.rotation = new THREE.Vector3(Spatial.Util.randVal(degs), Spatial.Util.randVal(degs), Spatial.Util.randVal(degs));
   
   this.center();
 };
@@ -169,6 +173,56 @@ Spatial.Structure.prototype.clone = function() {
   return so;
 };
 
+Spatial.Structure.prototype.equals = function(structure) {
+  
+  if(this.cubes.length != structure.cubes.length){
+    return false;
+  }
+  
+  var i = structure.cubes.length;
+  var cube;
+  while(i--) {
+    cube = structure.cubes[i];
+    if(!this.hasCubeAtPosition(cube.position)){
+     return false;
+    }
+  }
+
+  return true;
+};
+
+Spatial.Structure.prototype.onRender = function() {
+  this.cubeGroup.rotation.x = this.cubeGroup.rotation.x + 0.005;
+  this.cubeGroup.rotation.y = this.cubeGroup.rotation.y + 0.005;
+  //this.particleSystem.onRender();
+};
+
 Spatial.Structure.prototype.onClick = function(obj) {
-  this.events.publish(Spatial.Events.SELECTED);
+  if(this.selected){
+    this.deselect(obj);
+  }else{
+    this.select(obj);
+  }
+};
+
+Spatial.Structure.prototype.select = function(obj) {
+  this.selected = true;
+  
+  TweenLite.to(this.position, 0.5, {
+    z: 25,
+    ease: Quad.easeOut
+  });
+  
+  this.events.publish(Spatial.Events.SELECTED, { target: this, data: obj });
+};
+
+Spatial.Structure.prototype.deselect = function(obj) {
+  this.selected = false;
+  
+  TweenLite.to(this.position, 0.5, {
+    z: 0,
+    ease: Quad.easeOut
+  });
+  
+  this.events.publish(Spatial.Events.DESELECTED, { target: this, data: obj });
 };

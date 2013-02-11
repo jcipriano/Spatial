@@ -41,8 +41,8 @@ Spatial.GameView.prototype.start = function() {
   this.projector = new THREE.Projector();
   
   // lights
-  var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
-  directionalLight.position.set(0, 0, 100);//.normalize();
+  //var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
+  //directionalLight.position.set(0, 0, 100);//.normalize();
   //this.scene.add(directionalLight);
   
   var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
@@ -147,7 +147,7 @@ Spatial.GameView.prototype.onMouseClick = function(event) {
   var raycaster = new THREE.Raycaster(this.camera.position, vector.sub( this.camera.position ).normalize());
   var intersects = raycaster.intersectObjects(Spatial.game.model.structureMeshes);
 
-  if(intersects.length > 0) {
+  if(intersects.length) {
     var obj = intersects[0];
     if(obj.object.context && obj.object.context.onClick){
       obj.object.context.onClick(obj);

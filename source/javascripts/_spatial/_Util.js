@@ -25,6 +25,26 @@ Spatial.Util.randHex = function() {
   return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
 };
 
+Spatial.Util.addTo = function(ary, value) {
+  if(ary.indexOf(value) !== -1){
+    return false;
+  }
+   
+  ary.push(value);
+  
+  return true;
+};
+
+Spatial.Util.removeFrom = function(ary, value) {
+  if(ary.indexOf(value) === -1){
+    return false;
+  }
+   
+  ary.splice(ary.indexOf(value), 1);
+  
+  return true;
+};
+
 Spatial.Util.sortOn = function(ary, prop) {
   function sortOnProp(property) {
     var sortOrder = 1;
