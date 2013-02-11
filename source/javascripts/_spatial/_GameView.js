@@ -62,7 +62,8 @@ Spatial.GameView.prototype.start = function() {
   this.cube.position.z = 100;
 	this.scene.add(this.cube);
   
-  this.buildSpatialObjs();
+  this.structureGroup = new Spatial.StructureGroup(5);
+  this.scene.add(this.structureGroup);
   
   // render
   this.renderLoop();
@@ -85,39 +86,6 @@ Spatial.GameView.prototype.start = function() {
 };
 
 /**
- * Render spatial objects
- **/
-Spatial.GameView.prototype.buildSpatialObjs = function() {
-  console.log('Spatial.GameView.prototype.renderSpatialObjs');
-  
-  this.group = new THREE.Object3D();
-  this.scene.add(this.group);
-  
-  this.spatialObjs = [];
-  
-  var so1 = new Spatial.Structure(10, 10);
-  so1.showWireframe();
-  this.group.add(so1);
-  this.spatialObjs.push(so1);
-  
-  var so2 = new Spatial.Structure(10, 10);
-  so2.showWireframe();
-  this.group.add(so2);
-  this.spatialObjs.push(so2);
-  
-  var so3 = this.spatialObjs[Math.floor(Math.random() * this.spatialObjs.length)].clone(true);
-  so3.position.x = 125;
-  so3.showWireframe();
-  this.group.add(so3);
-  this.spatialObjs.push(so3);
-  
-  this.spatialObjs = Spatial.Util.shuffle(this.spatialObjs);
-  this.spatialObjs[0].position.x = -100;
-  this.spatialObjs[1].position.x = 0;
-  this.spatialObjs[2].position.x = 100;
-};
-
-/**
  * Rendering loop
  **/
 Spatial.GameView.prototype.renderLoop = function() {
@@ -135,13 +103,7 @@ Spatial.GameView.prototype.renderLoop = function() {
  **/
 Spatial.GameView.prototype.render = function() {
   
-  var i = this.spatialObjs.length;
-  var spatialObj;
-  while(i--) {
-    spatialObj = this.spatialObjs[i];
-    spatialObj.rotation.x = spatialObj.rotation.x + 0.01;
-    spatialObj.rotation.y = spatialObj.rotation.y + 0.01;
-  }
+  this.structureGroup.rotate();
   
   // camera
   this.camera.lookAt(new THREE.Vector3(0,0,0));
