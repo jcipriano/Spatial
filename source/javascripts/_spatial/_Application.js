@@ -1,15 +1,19 @@
 var Spatial = {};
 
 Spatial.Game = function() {
-  this.gameView;
+  this.view;
+  this.model;
 };
 
 Spatial.Game.prototype.init = function() {
-  this.gameView = new Spatial.GameView('#canvas-holder');
-  this.gameView.start();
+  this.view = new Spatial.GameView('#canvas-holder');
+  
+  this.model = new Spatial.GameModel();
+  
+  this.view.start();
 };
 
 $(function(){
-  var game = new Spatial.Game();
-  game.init();
+  Spatial.game = new Spatial.Game();
+  Spatial.game.init();
 });

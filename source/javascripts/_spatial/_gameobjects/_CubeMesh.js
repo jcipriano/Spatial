@@ -1,7 +1,8 @@
-Spatial.CubeMesh = function(color, size) {
+Spatial.CubeMesh = function(color, size, context) {
   
   this.color = color;
   this.size = size;
+  this.context = context;
   
   this.geometry = new Spatial.CubeGeometry(size, size, size);
   this.material = new THREE.MeshPhongMaterial( { 
@@ -28,8 +29,8 @@ Spatial.CubeMesh.prototype.showWireframe = function() {
   this.add(this.wireframe);
 };
 
-Spatial.CubeMesh.prototype.clone = function(color) {
-  var cube = new Spatial.CubeMesh(color ? color : this.color, this.size);
+Spatial.CubeMesh.prototype.clone = function(color, context) {
+  var cube = new Spatial.CubeMesh(color ? color : this.color, this.size, context);
   cube.position = this.position.clone();
   return cube;
 };

@@ -141,11 +141,16 @@ Spatial.GameView.prototype.onMouseMove = function(event) {
 Spatial.GameView.prototype.onMouseClick = function(event) {
   event.preventDefault();
 
-   var vector = new THREE.Vector3((event.clientX / this.winWidth) * 2 - 1, -(event.clientY / this.winHeight) * 2 + 1, 0.5);
-   this.projector.unprojectVector(vector, this.camera);
+  var vector = new THREE.Vector3((event.clientX / this.winWidth) * 2 - 1, -(event.clientY / this.winHeight) * 2 + 1, 0.5);
+  this.projector.unprojectVector(vector, this.camera);
 
-   var ray = new THREE.Raycaster(this.camera.position, vector.sub( this.camera.position ).normalize());
-   var raycaster = ray.intersectObjects(this.spatialObjs);
-   
-   console.log(intersects);
+  var raycaster = new THREE.Raycaster(this.camera.position, vector.sub( this.camera.position ).normalize());
+  var intersects = raycaster.intersectObjects(Spatial.game.model.structureMeshes);
+
+  if(intersects.length > 0) {
+    var obj = intersects[0];
+    if(obj.object.context && obj.object.context.onClick){
+      obj.object.context.onClick(obj);
+    }
+  }
 };

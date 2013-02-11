@@ -2,6 +2,8 @@ Spatial.Structure = function(length, size, autoBuild) {
   
   THREE.Object3D.call(this);
   
+  this.events = new Spatial.EventPublisher();
+  
   this.width = 0;
   this.height = 0;
   this.depth = 0;
@@ -46,9 +48,10 @@ Spatial.Structure.prototype.build = function(cubes) {
     
     i = cubes.length;
     while(i--) {
-      mesh = cubes[i].clone(color);
+      mesh = cubes[i].clone(color, this);
       this.group.add(mesh);
       this.cubes.push(mesh);
+      Spatial.game.model.addStructureMesh(mesh);
     }
     
     return;
@@ -56,7 +59,7 @@ Spatial.Structure.prototype.build = function(cubes) {
   
   // resume default build
   for(i; i<this.cubeLength; i++){
-    mesh = new Spatial.CubeMesh(color, this.size);
+    mesh = new Spatial.CubeMesh(color, this.size, this);
     
     if(lastMesh){
       var emptyPos = this.getEmptyPositions(lastMesh.position);
@@ -66,6 +69,7 @@ Spatial.Structure.prototype.build = function(cubes) {
     
     this.group.add(mesh);
     this.cubes.push(mesh);
+    Spatial.game.model.addStructureMesh(mesh);
     lastMesh = mesh;
   }
   
@@ -163,4 +167,8 @@ Spatial.Structure.prototype.clone = function() {
   var so = new Spatial.Structure(this.cubeLength, this.size, false);
   so.build(this.cubes);
   return so;
+};
+
+Spatial.Structure.prototype.onClick = function(obj) {
+  this.events.publish(Spatial.Events.SELECTED);
 };
