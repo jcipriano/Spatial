@@ -1,5 +1,4 @@
 Spatial.StructureGroup = function(length) {
-  //console.log('Spatial.Structure');
   
   THREE.Object3D.call(this);
   
@@ -57,12 +56,12 @@ Spatial.StructureGroup.prototype.build = function() {
   }
 };
 
-Spatial.StructureGroup.prototype.rotate = function() {
+Spatial.StructureGroup.prototype.onRender = function() {
   var i = this.spatialObjs.length;
   var spatialObj;
   while(i--) {
     spatialObj = this.spatialObjs[i];
-    spatialObj.rotation.x = spatialObj.rotation.x + 0.01;
-    spatialObj.rotation.y = spatialObj.rotation.y + 0.01;
+    spatialObj.rotation.x = spatialObj.rotation.x + 0.005;
+    spatialObj.rotation.y = spatialObj.rotation.y + 0.005;
   }
 };

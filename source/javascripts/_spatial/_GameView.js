@@ -13,7 +13,7 @@ Spatial.GameView = function(el) {
   this.scene;
   this.projector;
   
-  this.spatialObjs;
+  this.renderObjects = [];
 };
 
 /**
@@ -40,7 +40,7 @@ Spatial.GameView.prototype.start = function() {
   // projector
   this.projector = new THREE.Projector();
   
-  // light
+  // lights
   var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
   directionalLight.position.set(0, 0, 100);//.normalize();
   //this.scene.add(directionalLight);
@@ -49,21 +49,14 @@ Spatial.GameView.prototype.start = function() {
   light.position.set(0, 0, 25);
   this.scene.add( light );
   
-  // skybox
-	var skyBoxMaterial = new THREE.MeshPhongMaterial( { 
-    color: 0x000000, 
-    ambient: 0x000000,
-    specular: 0xFFFFFF,
-    shininess: 1,
-    side: THREE.BackSide
-  });
-  
-  this.cube = new THREE.Mesh(new THREE.CubeGeometry(400, 125, 500), skyBoxMaterial);
-  this.cube.position.z = 100;
-	this.scene.add(this.cube);
+  this.room = new Spatial.Room();
+  this.room.position.z = 100;
+	this.scene.add(this.room);
+  this.renderObjects.push(this.room);
   
   this.structureGroup = new Spatial.StructureGroup(5);
   this.scene.add(this.structureGroup);
+  this.renderObjects.push(this.structureGroup);
   
   // render
   this.renderLoop();
@@ -103,7 +96,16 @@ Spatial.GameView.prototype.renderLoop = function() {
  **/
 Spatial.GameView.prototype.render = function() {
   
-  this.structureGroup.rotate();
+  this.structureGroup.onRender();
+  
+  var i = this.renderObjects.length;
+  var renderObj;
+  while(i--) {
+    renderObj = this.renderObjects[i];
+    if(renderObj.onRender){
+      renderObj.onRender();
+    }
+  }
   
   // camera
   this.camera.lookAt(new THREE.Vector3(0,0,0));
