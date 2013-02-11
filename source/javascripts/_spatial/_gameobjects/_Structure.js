@@ -1,5 +1,4 @@
 Spatial.Structure = function(length, size, autoBuild) {
-  //console.log('Spatial.Structure');
   
   THREE.Object3D.call(this);
   
@@ -39,7 +38,7 @@ Spatial.Structure.prototype.build = function(cubes) {
   var lastMesh;
   var i = 0;
   
-  var color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  var color = Spatial.Util.randHex();
   
   // cloning?
   if(cubes){
@@ -61,7 +60,7 @@ Spatial.Structure.prototype.build = function(cubes) {
     
     if(lastMesh){
       var emptyPos = this.getEmptyPositions(lastMesh.position);
-      var side = emptyPos[Math.floor(Math.random() * emptyPos.length)];
+      var side = Spatial.Util.randVal(emptyPos);
       mesh.position = side.position;
     }
     
@@ -69,6 +68,15 @@ Spatial.Structure.prototype.build = function(cubes) {
     this.cubes.push(mesh);
     lastMesh = mesh;
   }
+  
+  // randomly orient structure
+  var degs = [
+    Spatial.Util.toRads(0),
+    Spatial.Util.toRads(90),
+    Spatial.Util.toRads(180),
+    Spatial.Util.toRads(270)
+  ];
+  this.group.rotation = new THREE.Vector3(Spatial.Util.randVal(degs), Spatial.Util.randVal(degs), Spatial.Util.randVal(degs));
   
   this.center();
 };

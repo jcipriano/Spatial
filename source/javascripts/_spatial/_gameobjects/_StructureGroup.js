@@ -28,7 +28,7 @@ Spatial.StructureGroup.prototype.build = function() {
     }
     // generate
     else{
-      str = new Spatial.Structure(10, 10);
+      str = new Spatial.Structure(4, 10);
     }
     this.group.add(str);
     this.spatialObjs.push(str);
@@ -37,7 +37,7 @@ Spatial.StructureGroup.prototype.build = function() {
   }
   
   // generate last one
-  var str =  new Spatial.Structure(10, 10);
+  var str =  new Spatial.Structure(4, 10);
   this.group.add(str);
   this.spatialObjs.push(str);
   
@@ -45,7 +45,7 @@ Spatial.StructureGroup.prototype.build = function() {
   this.spatialObjs = Spatial.Util.shuffle(this.spatialObjs);
   
   // lay them out
-  var width = 225;
+  var width = 200;
   var spacing = width / (this.spatialObjs.length - 1);
   var startX = 0 - width / 2;
   i = 0, len = this.spatialObjs.length;

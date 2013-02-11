@@ -1,5 +1,4 @@
 Spatial.CubeGeometry = function(width, height, depth, widthSegments, heightSegments, depthSegments) {
-  //console.log('Spatial.SpatialCubeGeometry');
 
   THREE.CubeGeometry.call(this, width, height, depth, widthSegments, heightSegments, depthSegments);
 };

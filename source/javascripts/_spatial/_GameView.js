@@ -3,8 +3,8 @@ Spatial.GameView = function(el) {
   
   this.domEl = $(el);
   
-  this.height = 500;
-  this.width = 500;
+  this.height = $(window).height;
+  this.width = height = $(window).width;
   this.cameraDistance = 150;
   
   this.renderer;
