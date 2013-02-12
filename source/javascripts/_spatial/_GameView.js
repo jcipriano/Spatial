@@ -5,7 +5,7 @@ Spatial.GameView = function(el) {
   
   this.height = $(window).height;
   this.width = height = $(window).width;
-  this.cameraDistance = 150;
+  this.cameraDistance = 200;
   
   this.renderer;
   this.domEl;
@@ -40,17 +40,8 @@ Spatial.GameView.prototype.start = function() {
   // projector
   this.projector = new THREE.Projector();
   
-  // lights
-  //var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
-  //directionalLight.position.set(0, 0, 100);//.normalize();
-  //this.scene.add(directionalLight);
-  
-  var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
-  light.position.set(0, 0, 25);
-  this.scene.add( light );
   
   this.room = new Spatial.Room();
-  this.room.position.z = 100;
 	this.scene.add(this.room);
   this.renderObjects.push(this.room);
   
@@ -103,7 +94,7 @@ Spatial.GameView.prototype.render = function() {
   while(i--) {
     renderObj = this.renderObjects[i];
     if(renderObj.onRender){
-      renderObj.onRender();
+      renderObj.onRender(this.camera.position);
     }
   }
   
@@ -129,8 +120,8 @@ Spatial.GameView.prototype.onWindowResized = function(event) {
  **/
 Spatial.GameView.prototype.onMouseMove = function(event) {
   TweenLite.to(this.camera.position, 1, {
-    x: 150 * (event.x - this.winWidth / 2) / (this.winWidth / 2),
-    y: -50 * (event.y - this.winHeight / 2) / (this.winHeight / 2),
+    x: 225 * (event.x - this.winWidth / 2) / (this.winWidth / 2),
+    y: -60 * (event.y - this.winHeight / 2) / (this.winHeight / 2),
     ease: Quad.easeOut
   }); 
 }

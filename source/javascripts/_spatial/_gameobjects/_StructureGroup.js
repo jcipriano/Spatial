@@ -24,7 +24,7 @@ Spatial.StructureGroup.prototype.build = function() {
   for(i; i<len; i++) {
     // generate
     if(!lastStr){
-      str = new Spatial.Structure(4, 10);
+      str = new Spatial.Structure(8, 10);
     }
     // clone
     else{
@@ -37,7 +37,7 @@ Spatial.StructureGroup.prototype.build = function() {
   }
   
   // generate last one
-  var str =  new Spatial.Structure(4, 10);
+  var str =  new Spatial.Structure(8, 10);
   this.group.add(str);
   this.spatialObjs.push(str);
   
@@ -45,7 +45,7 @@ Spatial.StructureGroup.prototype.build = function() {
   this.spatialObjs = Spatial.Util.shuffle(this.spatialObjs);
   
   // lay them out
-  var width = 200;
+  var width = 250;
   var spacing = width / (this.spatialObjs.length - 1);
   var startX = 0 - width / 2;
   i = 0, len = this.spatialObjs.length;
@@ -60,15 +60,15 @@ Spatial.StructureGroup.prototype.build = function() {
 
 Spatial.StructureGroup.prototype.structureSelected = function(data) {
   Spatial.Util.addTo(this.selections, data.target);
-  
-  if(this.allFound()){
-    this.events.publish(Spatial.Events.SUCCESS);
-  }
+  this.verify();
 };
 
 Spatial.StructureGroup.prototype.structureDeselected = function(data) {
   Spatial.Util.removeFrom(this.selections, data.target);
-  
+  this.verify();
+};
+
+Spatial.StructureGroup.prototype.verify = function() {
   if(this.allFound()){
     this.events.publish(Spatial.Events.SUCCESS);
   }

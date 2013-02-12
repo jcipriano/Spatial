@@ -12,4 +12,5 @@
 #= require "_spatial/_gameobjects/_CubeGeometry"
 #= require "_spatial/_gameobjects/_CubeMesh"
 #= require "_spatial/_gameobjects/_ParticleSystem"
+#= require "_spatial/_gameobjects/_LightPlatform"
 
