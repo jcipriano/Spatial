@@ -34,7 +34,7 @@ Spatial.LightPlatform.prototype.build = function() {
   this.lightTop = new THREE.SpotLight(0xFFFFFF, 0.5);
   this.lightTop.position.set(0, 120, 0);
   this.lightTop.target = this.cylBot;
-  this.add(this.lightTop);
+  //this.add(this.lightTop);
   
   this.lightBot = new THREE.SpotLight(0xFFFFFF, 0.5);
   this.lightBot.position.set(0, 0, 0);

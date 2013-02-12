@@ -2,6 +2,7 @@
 
 #= require "_spatial/_Application"
 #= require "_spatial/_GameView"
+#= require "_spatial/_EffectsView"
 #= require "_spatial/_GameModel"
 #= require "_spatial/_Util"
 #= require "_spatial/_EventPublisher"

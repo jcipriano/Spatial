@@ -2,10 +2,9 @@ Spatial.GameView = function(el) {
   console.log('Spatial.GameView');
   
   this.domEl = $(el);
-  
-  this.height = $(window).height;
-  this.width = height = $(window).width;
   this.cameraDistance = 200;
+  
+  this.effectsView;
   
   this.renderer;
   this.domEl;
@@ -22,7 +21,7 @@ Spatial.GameView = function(el) {
 Spatial.GameView.prototype.start = function() {
   // renderer
   this.renderer = new THREE.WebGLRenderer( { antialias: true } );
-  this.renderer.setSize(this.width, this.height);
+  this.renderer.setSize(Spatial.game.viewport.width, Spatial.game.viewport.height);
   this.renderer.physicallyBasedShading = true;
   this.domEl.append(this.renderer.domElement);
   
@@ -30,7 +29,7 @@ Spatial.GameView.prototype.start = function() {
   this.scene = new THREE.Scene();
   
   // camera
-	this.camera = new THREE.PerspectiveCamera( 60, this.width / this.height, 1, 100000 );
+	this.camera = new THREE.PerspectiveCamera( 60, Spatial.game.viewport.aspectRatio, 1, 100000 );
 	//this.camera.setLens(85, 35);
 	this.camera.position.y = 0
 	this.camera.position.x = 0
@@ -40,7 +39,6 @@ Spatial.GameView.prototype.start = function() {
   // projector
   this.projector = new THREE.Projector();
   
-  
   this.room = new Spatial.Room();
 	this.scene.add(this.room);
   this.renderObjects.push(this.room);
@@ -49,37 +47,15 @@ Spatial.GameView.prototype.start = function() {
   this.scene.add(this.structureGroup);
   this.renderObjects.push(this.structureGroup);
   
-  // render
-  this.renderLoop();
-  
   // events
-  var that = this;
+  Spatial.game.events.add(Spatial.Events.CLICK, this.onMouseClick, this);
+  Spatial.game.events.add(Spatial.Events.MOVE, this.onMouseMove, this);
+  Spatial.game.events.add(Spatial.Events.RESIZE, this.onWindowResized, this);
+  Spatial.game.events.add(Spatial.Events.ENTERFRAME, this.render, this);
   
-  $(window).resize(function(event){
-    that.onWindowResized(event);
-  });
-	this.onWindowResized(null);
-  
-  $(window).mousemove(function(event){
-    that.onMouseMove(event);
-  });
-  
-  $(window).click(function(event){
-    that.onMouseClick(event);
-  });
-};
-
-/**
- * Rendering loop
- **/
-Spatial.GameView.prototype.renderLoop = function() {
-  
+  // start
+  this.onWindowResized(Spatial.game.viewport);
   this.render();
-  
-  var that = this;
-  window.requestAnimationFrame(function(){
-    that.renderLoop();
-  });
 };
 
 /**
@@ -108,31 +84,24 @@ Spatial.GameView.prototype.render = function() {
 /**
  * Window resize
  **/
-Spatial.GameView.prototype.onWindowResized = function(event) {
-  this.winWidth = window.innerWidth;
-  this.winHeight = window.innerHeight;
-	this.renderer.setSize( this.winWidth,  this.winHeight);
-	this.camera.projectionMatrix.makePerspective( 60, this.winWidth / this.winHeight, 1, 1100 );
+Spatial.GameView.prototype.onWindowResized = function(data) {
+	this.renderer.setSize(data.width,  data.height);
+	this.camera.projectionMatrix.makePerspective( 60, data.aspectRatio, 1, 1100 );
 }
 
 /**
  * Mouse move
  **/
-Spatial.GameView.prototype.onMouseMove = function(event) {
-  TweenLite.to(this.camera.position, 1, {
-    x: 225 * (event.x - this.winWidth / 2) / (this.winWidth / 2),
-    y: -60 * (event.y - this.winHeight / 2) / (this.winHeight / 2),
-    ease: Quad.easeOut
-  }); 
+Spatial.GameView.prototype.onMouseMove = function(data) {
+  TweenLite.to(this.camera.position, 1, { x: 225 * data.xP, y: -60 * data.yP, ease: Quad.easeOut }); 
 }
 
 /**
  * Mouse click
  **/
-Spatial.GameView.prototype.onMouseClick = function(event) {
-  event.preventDefault();
+Spatial.GameView.prototype.onMouseClick = function(data) {
 
-  var vector = new THREE.Vector3((event.clientX / this.winWidth) * 2 - 1, -(event.clientY / this.winHeight) * 2 + 1, 0.5);
+  var vector = new THREE.Vector3((data.x / Spatial.game.viewport.width) * 2 - 1, -(data.y / Spatial.game.viewport.height) * 2 + 1, 0.5);
   this.projector.unprojectVector(vector, this.camera);
 
   var raycaster = new THREE.Raycaster(this.camera.position, vector.sub( this.camera.position ).normalize());

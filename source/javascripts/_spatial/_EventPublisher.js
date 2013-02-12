@@ -1,9 +1,12 @@
 Spatial.Events = {
   CLICK: 'click',
+  MOVE: 'move',
+  RESIZE: 'resize',
   SELECTED: 'selected',
   DESELECTED: 'deselected',
   SUCCESS: 'success',
-  FAILURE: 'failure'
+  FAILURE: 'failure',
+  ENTERFRAME: 'enterframe'
 };
 
 Spatial.EventPublisher = function() {

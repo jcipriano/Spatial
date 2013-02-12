@@ -19,12 +19,15 @@ Spatial.StructureGroup.prototype.build = function() {
   
   this.spatialObjs = [];
   
+  var strLength = 15;
+  var strSize = 7;
+  
   var str, lastStr;
   var i = 0, len = this.length-1;
   for(i; i<len; i++) {
     // generate
     if(!lastStr){
-      str = new Spatial.Structure(8, 10);
+      str = new Spatial.Structure(strLength, strSize);
     }
     // clone
     else{
@@ -37,7 +40,7 @@ Spatial.StructureGroup.prototype.build = function() {
   }
   
   // generate last one
-  var str =  new Spatial.Structure(8, 10);
+  var str =  new Spatial.Structure(strLength, strSize);
   this.group.add(str);
   this.spatialObjs.push(str);
   
