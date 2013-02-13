@@ -53,5 +53,13 @@ Spatial.LightPlatform.prototype.buildPlatForm = function() {
   plane.rotation.x = Spatial.Util.toRads(-90);
   cylinder.add(plane);
   
+
+	var beamTexture = THREE.ImageUtils.loadTexture('images/textures/LightPlatform_beam.png');
+	beamTexture.needsUpdate = true;
+  
+  var beamMat = new THREE.SpriteMaterial({ map: beamTexture, useScreenCoordinates: false, color: 0x000000, fog: true });
+  var sprite = new THREE.Sprite(beamMat);
+  cylinder.add(sprite);
+  
   return { platform: cylinder, material: lightMat, light: light};
 };
