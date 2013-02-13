@@ -96,7 +96,7 @@ Spatial.GameView.prototype.onWindowResized = function(data) {
  * Mouse move
  **/
 Spatial.GameView.prototype.onMouseMove = function(data) {
-  TweenLite.to(this.camera.position, 1, { x: 225 * data.xP, y: -30 * data.yP, ease: Quad.easeOut }); 
+  TweenLite.to(this.camera.position, 1, { x: 225 * data.xP, y: -20 * data.yP, ease: Quad.easeOut }); 
 }
 
 /**

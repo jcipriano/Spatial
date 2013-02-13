@@ -52,9 +52,9 @@ Spatial.LightPlatform.prototype.buildPlatForm = function(verticalFlip) {
   cylinder.add(plane);
 
 	var beamTexture = new THREE.ImageUtils.loadTexture('images/textures/LightPlatform_beam.png');
-  var beamMat = new THREE.SpriteMaterial({ map: beamTexture, useScreenCoordinates: false, color: 0xFFFFFF, fog: true});
+  var beamMat = new THREE.SpriteMaterial({ map: beamTexture, useScreenCoordinates: false, color: 0xFFFFFF, opacity: 0.75, fog: true});
   var sprite = new THREE.Sprite(beamMat);
-  var scale = 115;
+  var scale = 120;
   sprite.scale.set(scale, verticalFlip ? -scale : scale, scale);
   sprite.position.y = 55;
   cylinder.add(sprite);
