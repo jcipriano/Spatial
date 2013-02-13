@@ -40,25 +40,21 @@ Spatial.LightPlatform.prototype.buildPlatForm = function() {
   lightTarget.position.y = 100;
   cylinder.add(lightTarget);
   
-  var light = new THREE.SpotLight(0xFFFFFF, 0.5);
+  var light = new THREE.SpotLight(0xFFFFFF, 0.75);
   light.target = lightTarget;
   cylinder.add(light);
 
 	var texture = THREE.ImageUtils.loadTexture('images/textures/LightPlatform_on.png');
-	texture.needsUpdate = true;
-  
 	var lightMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 1 });
   var plane = new THREE.Mesh(new THREE.PlaneGeometry(45, 45, 2, 2), lightMat);
   plane.position.y = 2;
   plane.rotation.x = Spatial.Util.toRads(-90);
   cylinder.add(plane);
-  
 
 	var beamTexture = THREE.ImageUtils.loadTexture('images/textures/LightPlatform_beam.png');
-	beamTexture.needsUpdate = true;
-  
-  var beamMat = new THREE.SpriteMaterial({ map: beamTexture, useScreenCoordinates: false, color: 0x000000, fog: true });
+  var beamMat = new THREE.SpriteMaterial({ map: beamTexture, useScreenCoordinates: true});
   var sprite = new THREE.Sprite(beamMat);
+  sprite.position.y = 25;
   cylinder.add(sprite);
   
   return { platform: cylinder, material: lightMat, light: light};

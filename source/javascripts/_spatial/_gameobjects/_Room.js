@@ -25,7 +25,7 @@ Spatial.Room.prototype.build = function() {
   this.cube.position.z = 100;
 	this.add(this.cube);
   
-  this.light = new THREE.PointLight( 0xFFFFFF, 0.15, 0 );
+  this.light = new THREE.PointLight( 0xFFFFFF, 0.5, 0 );
   this.light.position.set(0, 0, 200);
   this.add(this.light);
 
