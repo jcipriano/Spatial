@@ -89,15 +89,15 @@ Spatial.GameView.prototype.render = function() {
  **/
 Spatial.GameView.prototype.onWindowResized = function(data) {
 	this.renderer.setSize(data.width,  data.height);
-	this.camera.projectionMatrix.makePerspective( 60, data.aspectRatio, 1, 1100 );
-}
+	this.camera.projectionMatrix.makePerspective( 60, data.width/data.height, 1, 1100 );
+};
 
 /**
  * Mouse move
  **/
 Spatial.GameView.prototype.onMouseMove = function(data) {
   TweenLite.to(this.camera.position, 1, { x: 225 * data.xP, y: -20 * data.yP, ease: Quad.easeOut }); 
-}
+};
 
 /**
  * Mouse click

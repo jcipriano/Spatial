@@ -90,6 +90,6 @@ Spatial.EffectsView.prototype.render = function(camPos) {
 /**
  * Window resize
  **/
-Spatial.GameView.prototype.onWindowResized = function(data) {
+Spatial.EffectsView.prototype.onWindowResized = function(data) {
 	this.camera.projectionMatrix.makePerspective(60, data.aspectRatio, 1, 1100);
 }
