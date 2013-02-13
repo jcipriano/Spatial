@@ -37,7 +37,7 @@ Spatial.Game.prototype.init = function() {
   this.gameView.start();
   
   // effects view
-  this.effectsView = new Spatial.EffectsView();
+  //this.effectsView = new Spatial.EffectsView(this.gameView);
   
   this.enterframe();
 };

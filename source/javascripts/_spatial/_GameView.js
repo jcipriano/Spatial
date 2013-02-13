@@ -19,10 +19,12 @@ Spatial.GameView = function(el) {
  * Initialize game view
  **/
 Spatial.GameView.prototype.start = function() {
+  
   // renderer
   this.renderer = new THREE.WebGLRenderer( { antialias: true } );
   this.renderer.setSize(Spatial.game.viewport.width, Spatial.game.viewport.height);
   this.renderer.physicallyBasedShading = true;
+	this.renderer.autoClear = false;
   this.domEl.append(this.renderer.domElement);
   
   // scene
@@ -30,7 +32,6 @@ Spatial.GameView.prototype.start = function() {
   
   // camera
 	this.camera = new THREE.PerspectiveCamera( 60, Spatial.game.viewport.aspectRatio, 1, 100000 );
-	//this.camera.setLens(85, 35);
 	this.camera.position.y = 0
 	this.camera.position.x = 0
 	this.camera.position.z = this.cameraDistance;
@@ -39,10 +40,12 @@ Spatial.GameView.prototype.start = function() {
   // projector
   this.projector = new THREE.Projector();
   
+  // room
   this.room = new Spatial.Room();
 	this.scene.add(this.room);
   this.renderObjects.push(this.room);
   
+  // strcutures
   this.structureGroup = new Spatial.StructureGroup(5);
   this.scene.add(this.structureGroup);
   this.renderObjects.push(this.structureGroup);
@@ -75,7 +78,7 @@ Spatial.GameView.prototype.render = function() {
   }
   
   // camera
-  this.camera.lookAt(new THREE.Vector3(0,0,0));
+  this.camera.lookAt(this.scene.position);
 	
   // render
   this.renderer.render(this.scene, this.camera);

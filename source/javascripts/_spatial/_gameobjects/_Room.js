@@ -25,7 +25,7 @@ Spatial.Room.prototype.build = function() {
   this.cube.position.z = 100;
 	this.add(this.cube);
   
-  this.light = new THREE.PointLight( 0xFFFFFF, 0.55, 0 );
+  this.light = new THREE.PointLight( 0xFFFFFF, 0.15, 0 );
   this.light.position.set(0, 0, 200);
   this.add(this.light);
 
@@ -47,6 +47,7 @@ Spatial.Room.prototype.build = function() {
     platform = this.platforms[i];
     platform.position.x = startX + spacing * i;
   }
+
 };
 
 Spatial.Room.prototype.onRender = function(camPos) {

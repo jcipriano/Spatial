@@ -1,4 +1,5 @@
 #= require_directory "./_libs"
+#= require_directory "./_webgl"
 
 #= require "_spatial/_Application"
 #= require "_spatial/_GameView"
