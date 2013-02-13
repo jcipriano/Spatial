@@ -23,6 +23,52 @@ Spatial.LightPlatform.prototype.build = function() {
   this.top.platform.rotation.y = Spatial.Util.toRads(180);
   this.top.platform.rotation.x = Spatial.Util.toRads(180);
   this.add(this.top.platform);
+  
+  this.particulate();
+};
+Spatial.LightPlatform.prototype.particulate = function() {
+
+  this.particles = new THREE.Geometry();
+  var len = 100;
+  while(len--){
+    var pX = Math.random() * 25 - 12;
+    var pY = Math.random() * 120;
+    var pZ = Math.random() * 25 - 12;
+    
+    var particle = new THREE.Vector3(pX, pY, pZ);
+    particle.velocity = new THREE.Vector3(0, 0.5, 0);  
+    particle.setLength(particle.length());
+    this.particles.vertices.push(particle);
+  }
+  
+
+  var pMaterial = new THREE.ParticleBasicMaterial({
+    color: 0xFFFFFF,
+    size: 0.10,
+    transparent: true,
+    opacity: 0.65
+  });
+  
+  this.particleHolder = new THREE.Object3D();
+  this.add(this.particleHolder);
+    
+  this.particleSystem = new THREE.ParticleSystem(this.particles,  pMaterial);
+  this.particleSystem.sortParticles = true;
+  this.particleHolder.add(this.particleSystem);
+
+  Spatial.game.events.add(Spatial.Events.ENTERFRAME, this.render, this);
+};
+
+Spatial.LightPlatform.prototype.render = function() {
+  
+  this.particleHolder.rotation.y = this.particleHolder.rotation.y - 0.005
+  
+  $.each(this.particles.vertices, function(i, particle){
+    if(particle.y > 120) { particle.y = 0; }
+    particle.add(particle.velocity);
+  });
+  
+  this.particleSystem.geometry.__dirtyVertices = true;
 };
 
 Spatial.LightPlatform.prototype.buildPlatForm = function(verticalFlip) {
