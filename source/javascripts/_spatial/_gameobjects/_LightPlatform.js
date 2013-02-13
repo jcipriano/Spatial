@@ -18,14 +18,14 @@ Spatial.LightPlatform.prototype.build = function() {
   this.bottom.platform.position.y = -1;
   this.add(this.bottom.platform);
   
-	this.top = this.buildPlatForm();
+	this.top = this.buildPlatForm(true);
   this.top.platform.position.y = 121;
   this.top.platform.rotation.y = Spatial.Util.toRads(180);
   this.top.platform.rotation.x = Spatial.Util.toRads(180);
   this.add(this.top.platform);
 };
 
-Spatial.LightPlatform.prototype.buildPlatForm = function() {
+Spatial.LightPlatform.prototype.buildPlatForm = function(verticalFlip) {
   
   var mat = new THREE.MeshPhongMaterial( { 
     color: 0x222222, 
@@ -51,10 +51,12 @@ Spatial.LightPlatform.prototype.buildPlatForm = function() {
   plane.rotation.x = Spatial.Util.toRads(-90);
   cylinder.add(plane);
 
-	var beamTexture = THREE.ImageUtils.loadTexture('images/textures/LightPlatform_beam.png');
-  var beamMat = new THREE.SpriteMaterial({ map: beamTexture, useScreenCoordinates: true});
+	var beamTexture = new THREE.ImageUtils.loadTexture('images/textures/LightPlatform_beam.png');
+  var beamMat = new THREE.SpriteMaterial({ map: beamTexture, useScreenCoordinates: false, color: 0xFFFFFF, fog: true});
   var sprite = new THREE.Sprite(beamMat);
-  sprite.position.y = 25;
+  var scale = 115;
+  sprite.scale.set(scale, verticalFlip ? -scale : scale, scale);
+  sprite.position.y = 55;
   cylinder.add(sprite);
   
   return { platform: cylinder, material: lightMat, light: light};

@@ -19,8 +19,8 @@ Spatial.StructureGroup.prototype.build = function() {
   
   this.spatialObjs = [];
   
-  var strLength = 15;
-  var strSize = 7;
+  var strLength = 10;
+  var strSize = 5;
   
   var str, lastStr;
   var i = 0, len = this.length-1;

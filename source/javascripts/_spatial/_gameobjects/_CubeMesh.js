@@ -9,7 +9,7 @@ Spatial.CubeMesh = function(color, size, context) {
     color: color, 
     ambient: color,
     specular: 0xFFFFFF,
-    shininess: 2
+    shininess: 25
   });
   
   THREE.Mesh.call(this, this.geometry, this.material);
