@@ -26,6 +26,7 @@ Spatial.LightPlatform.prototype.build = function() {
   
   this.particulate();
 };
+
 Spatial.LightPlatform.prototype.particulate = function() {
 
   this.particles = new THREE.Geometry();
@@ -56,7 +57,28 @@ Spatial.LightPlatform.prototype.particulate = function() {
   this.particleSystem.sortParticles = true;
   this.particleHolder.add(this.particleSystem);
 
+  
+  this.on();
+};
+
+Spatial.LightPlatform.prototype.on = function() {
+  this.bottom.lensOn.visible = this.top.lensOn.visible = true;
+  this.bottom.lensOff.visible = this.top.lensOff.visible = true;
+  this.bottom.lightBeam.visible = this.top.lightBeam.visible = true;
+  this.bottom.light.intensity = this.top.light.intensity = 0.75;
+  this.particleSystem.visible = true;
+  
   Spatial.game.events.add(Spatial.Events.ENTERFRAME, this.render, this);
+};
+
+Spatial.LightPlatform.prototype.off = function() {
+  this.bottom.lensOn.visible = this.top.lensOn.visible = false;
+  this.bottom.lensOff.visible = this.top.lensOff.visible = false;
+  this.bottom.lightBeam.visible = this.top.lightBeam.visible = false;
+  this.bottom.light.intensity = this.top.light.intensity = 0;
+  this.particleSystem.visible = false;
+  
+  Spatial.game.events.remove(Spatial.Events.ENTERFRAME, this.render);
 };
 
 Spatial.LightPlatform.prototype.render = function() {
@@ -69,6 +91,7 @@ Spatial.LightPlatform.prototype.render = function() {
   });
   
   this.particleSystem.geometry.__dirtyVertices = true;
+
 };
 
 Spatial.LightPlatform.prototype.buildPlatForm = function(verticalFlip) {
@@ -89,21 +112,45 @@ Spatial.LightPlatform.prototype.buildPlatForm = function(verticalFlip) {
   var light = new THREE.SpotLight(0xFFFFFF, 0.75);
   light.target = lightTarget;
   cylinder.add(light);
-
-	var texture = THREE.ImageUtils.loadTexture('images/textures/LightPlatform_on.png');
-	var lightMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 1 });
-  var plane = new THREE.Mesh(new THREE.PlaneGeometry(45, 45, 2, 2), lightMat);
-  plane.position.y = 2;
-  plane.rotation.x = Spatial.Util.toRads(-90);
-  cylinder.add(plane);
-
-	var beamTexture = new THREE.ImageUtils.loadTexture('images/textures/LightPlatform_beam.png');
-  var beamMat = new THREE.SpriteMaterial({ map: beamTexture, useScreenCoordinates: false, color: 0xFFFFFF, opacity: 0.75, fog: true});
-  var sprite = new THREE.Sprite(beamMat);
-  var scale = 120;
-  sprite.scale.set(scale, verticalFlip ? -scale : scale, scale);
-  sprite.position.y = 55;
-  cylinder.add(sprite);
   
-  return { platform: cylinder, material: lightMat, light: light};
+  
+  var lensOn = new THREE.Mesh(new THREE.PlaneGeometry(45, 45, 2, 2), new THREE.MeshBasicMaterial({
+    map: THREE.ImageUtils.loadTexture('images/textures/LightPlatform_on.png'),
+    transparent: true,
+    opacity: 1
+  }));
+  lensOn.position.y = 2;
+  lensOn.rotation.x = Spatial.Util.toRads(-90);
+  cylinder.add(lensOn);
+  
+  var lensOff = new THREE.Mesh(new THREE.PlaneGeometry(45, 45, 2, 2), new THREE.MeshBasicMaterial({
+    map: THREE.ImageUtils.loadTexture('images/textures/LightPlatform_off.png'),
+    transparent: true,
+    opacity: 1
+  }));
+  lensOff.position.y = 2;
+  lensOff.rotation.x = Spatial.Util.toRads(-90);
+  cylinder.add(lensOff);
+  
+  
+  var lightBeam = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: new THREE.ImageUtils.loadTexture('images/textures/LightPlatform_beam.png'),
+    useScreenCoordinates: false,
+    color: 0xFFFFFF,
+    opacity: 0.75,
+    fog: true
+  }));
+  var scale = 120;
+  lightBeam.scale.set(scale, verticalFlip ? -scale : scale, scale);
+  lightBeam.position.y = 55;
+  cylinder.add(lightBeam);
+  
+  
+  return {
+    platform: cylinder,
+    light: light,
+    lensOn: lensOn,
+    lensOff: lensOff,
+    lightBeam: lightBeam
+  };
 };
