@@ -27,26 +27,31 @@ Spatial.StructureGroup.prototype.generate = function(activePlatforms) {
   
   this.spatialObjs = [];
   
-  var strLength = 20;
-  var strSize = 5;
+  this.numOfUniques = this.length - Spatial.Util.randInt(2, this.length);
+  this.clones = [];
+  
+  var strLength = 5;
+  var strSize = 10;
   
   var str, lastStr;
   var i = 0, len = this.length;
   for(i; i<len; i++) {
-    // generate if first one or last one
-    if(!lastStr || i === len-1) {
+    
+    if(i < this.numOfUniques) {
+      console.log('creating unique');
       str = new Spatial.Structure(strLength, strSize);
-    }
-    // clone
-    else {
-      str = lastStr.clone(true);
+    }else{
+      console.log('creating clone');
+      str = lastStr ? lastStr.clone(true) :new Spatial.Structure(strLength, strSize);
+      lastStr = str;
+      this.clones.push(str);
     }
     
     this.group.add(str);
     this.spatialObjs.push(str);
-    
-    lastStr = str;
   }
+  
+  console.log('number of clones generated: ', this.clones.length);
   
   // shuffle them
   this.spatialObjs = Spatial.Util.shuffle(this.spatialObjs);
@@ -85,30 +90,38 @@ Spatial.StructureGroup.prototype.degenerate = function() {
 };
 
 Spatial.StructureGroup.prototype.structureSelected = function(data) {
-  Spatial.Util.addTo(this.selections, data.target);
-  this.verify();
   
+  Spatial.Util.addTo(this.selections, data.target);
   this.activePlatforms[data.target.positionId].particleOn(); 
   
   Spatial.game.events.publish(Spatial.Events.SELECTED, data);
+  
+  if(this.clones.indexOf(data.target) === -1){
+    console.log('you picked a unique');
+  }else{
+    console.log('you picked a clone');
+  }
+  
+  this.verify(data.target);
 };
 
 Spatial.StructureGroup.prototype.structureDeselected = function(data) {
-  Spatial.Util.removeFrom(this.selections, data.target);
-  this.verify();
   
+  Spatial.Util.removeFrom(this.selections, data.target);
   this.activePlatforms[data.target.positionId].particleOff(); 
   
   Spatial.game.events.publish(Spatial.Events.DESELECTED, data);
+  
+  this.verify(data.target);
 };
 
-Spatial.StructureGroup.prototype.verify = function() {
-  if(this.allFound()){
+Spatial.StructureGroup.prototype.verify = function(data) {
+  if(this.allFound(data.target)){
     console.log('Spatial.StructureGroup.prototype.verify: true');
     Spatial.game.events.publish(Spatial.Events.SUCCESS);
     return true;
   }else{
-    console.log('Spatial.StructureGroup.prototype.verify: false');
+    //console.log('Spatial.StructureGroup.prototype.verify: false');
     Spatial.game.events.publish(Spatial.Events.FAILURE);
     return true;
   }
@@ -116,19 +129,17 @@ Spatial.StructureGroup.prototype.verify = function() {
 
 Spatial.StructureGroup.prototype.allFound = function() {
   
-  if(this.selections.length !== this.length -1){
+  if(this.selections.length !== this.clones.length){
     return false;
   }
   
-  var i = this.spatialObjs.length;
-  var str, lastStr;
+  var i = this.selections.length;
+  var str;
   while(i--) {
     str = this.selections[i];
-    if(lastStr && !str.equals(lastStr)){
+    if(this.clones.indexOf(str) === -1){
       return false;
     }
-    lastStr = str;
-
   }
   return true;
 };

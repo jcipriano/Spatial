@@ -18,7 +18,7 @@ Spatial.Util.randVal = function(ary) {
 }
 
 Spatial.Util.randInt = function(min, max) {
-  return min + Math.floor((Math.random() * max + 1));
+  return min + Math.floor(Math.random() * (max - min + 1));
 };
 
 Spatial.Util.randHex = function() {
