@@ -47,8 +47,6 @@ Spatial.Structure.prototype.build = function(cubes) {
   
   // cloning?
   if(cubes){
-    console.log('building clone');
-    
     i = cubes.length;
     while(i--) {
       mesh = cubes[i].clone(color, this);
@@ -210,9 +208,9 @@ Spatial.Structure.prototype.onClick = function(obj) {
 Spatial.Structure.prototype.select = function(obj) {
   this.selected = true;
   
-  TweenLite.to(this.position, 2, {
+  TweenLite.to(this.position, 7, {
     y: 20,
-    ease: Quint.easeOut
+    ease: Elastic.easeOut
   });
   
   this.events.publish(Spatial.Events.SELECTED, { target: this, data: obj });
@@ -221,9 +219,9 @@ Spatial.Structure.prototype.select = function(obj) {
 Spatial.Structure.prototype.deselect = function(obj) {
   this.selected = false;
   
-  TweenLite.to(this.position, 1, {
+  TweenLite.to(this.position, 4, {
     y: 0,
-    ease: Quint.easeOut
+    ease: Elastic.easeOut
   });
   
   this.events.publish(Spatial.Events.DESELECTED, { target: this, data: obj });

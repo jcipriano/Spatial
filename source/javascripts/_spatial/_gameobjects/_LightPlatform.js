@@ -28,7 +28,7 @@ Spatial.LightPlatform.prototype.build = function() {
 Spatial.LightPlatform.prototype.particulate = function() {
   
   this.particles = new THREE.Geometry();
-  var len = 200;
+  var len = 100;
   while(len--){
     var pX = Math.random() * 25 - 12;
     var pY = Math.random() * 120;
