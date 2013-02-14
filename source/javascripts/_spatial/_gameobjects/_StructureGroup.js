@@ -15,6 +15,8 @@ Spatial.StructureGroup.prototype.supr = THREE.Object3D.prototype;
 
 Spatial.StructureGroup.prototype.generate = function(activePlatforms) {
   
+  this.lvlData = Spatial.game.model.getLevelData();
+  
   if(this.spatialObjs.length){
     this.degenerate();
   }
@@ -30,8 +32,8 @@ Spatial.StructureGroup.prototype.generate = function(activePlatforms) {
   this.numOfUniques = this.length - Spatial.Util.randInt(2, this.length);
   this.clones = [];
   
-  var strLength = 3;
-  var strSize = 10;
+  var strLength = this.lvlData.cubeLength;
+  var strSize = this.lvlData.cubeSize;
   
   var str, lastStr;
   var i = 0, len = this.length;
@@ -39,11 +41,9 @@ Spatial.StructureGroup.prototype.generate = function(activePlatforms) {
   for(i; i<len; i++) {
     
     if(i < this.numOfUniques) {
-      console.log('creating unique');
       str = new Spatial.Structure(strLength + lengthPad, strSize);
       lengthPad = lengthPad == -1 ? 1 :  lengthPad + 1;
     }else{
-      console.log('creating clone');
       str = lastStr ? lastStr.clone(true) :new Spatial.Structure(strLength, strSize);
       lastStr = str;
       this.clones.push(str);

@@ -58,7 +58,9 @@ Spatial.Room.prototype.build = function() {
   Spatial.game.events.add(Spatial.Events.ENTERFRAME, this.render, this);
 };
 
-Spatial.Room.prototype.activate = function(length) {
+Spatial.Room.prototype.activate = function() {
+  
+  this.lvlData = Spatial.game.model.getLevelData();
   
   var platform;
   var i = 5;
@@ -68,7 +70,7 @@ Spatial.Room.prototype.activate = function(length) {
     platform.off();
   }
   
-  this.activePlatformSet = this.platformSets[length];
+  this.activePlatformSet = this.platformSets[this.lvlData.structures];
   var i = this.activePlatformSet.length;
   while(i--){
     this.activePlatformSet[i].on();
