@@ -18,7 +18,7 @@ Spatial.GameView = function(el) {
 /**
  * Initialize game view
  **/
-Spatial.GameView.prototype.start = function() {
+Spatial.GameView.prototype.start = function(callback) {
   
   // renderer
   this.renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -43,12 +43,10 @@ Spatial.GameView.prototype.start = function() {
   // room
   this.room = new Spatial.Room();
 	this.scene.add(this.room);
-  this.renderObjects.push(this.room);
   
   // strcutures
   this.structureGroup = new Spatial.StructureGroup(5);
   this.scene.add(this.structureGroup);
-  this.renderObjects.push(this.structureGroup);
   
   // events
   Spatial.game.events.add(Spatial.Events.CLICK, this.onMouseClick, this);
@@ -59,23 +57,14 @@ Spatial.GameView.prototype.start = function() {
   // start
   this.onWindowResized(Spatial.game.viewport);
   this.render();
+  
+  callback();
 };
 
 /**
  * Render
  **/
 Spatial.GameView.prototype.render = function() {
-  
-  this.structureGroup.onRender();
-  
-  var i = this.renderObjects.length;
-  var renderObj;
-  while(i--) {
-    renderObj = this.renderObjects[i];
-    if(renderObj.onRender){
-      renderObj.onRender(this.camera.position);
-    }
-  }
   
   // camera
   this.camera.lookAt(this.scene.position);

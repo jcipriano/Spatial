@@ -23,7 +23,7 @@ Spatial.CubeMesh.prototype.supr = THREE.Mesh.prototype;
 
 Spatial.CubeMesh.prototype.showWireframe = function() {
   
-  var material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true, wireframeLinewidth: 1 }); 
+  var material = new THREE.MeshBasicMaterial({ color: 0x111111, wireframe: true, wireframeLinewidth: 1 }); 
   
   this.wireframe = new THREE.Mesh(new THREE.CubeGeometry(this.geometry.width, this.geometry.height, this.geometry.depth), material);
   this.add(this.wireframe);

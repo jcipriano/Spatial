@@ -56,37 +56,40 @@ Spatial.Structure.prototype.build = function(cubes) {
       this.cubes.push(mesh);
       Spatial.game.model.addStructureMesh(mesh);
     }
-    
-    return;
-  };
-  
-  // resume default build
-  i = this.cubeLength;
-  while(i--) {
-    mesh = new Spatial.CubeMesh(color, this.size, this);
-    
-    if(lastMesh){
-      var emptyPos = this.getEmptyPositions(lastMesh.position);
-      var side = Spatial.Util.randVal(emptyPos);
-      mesh.position = side.position;
-    }
-    
-    this.cubeGroup.add(mesh);
-    this.cubes.push(mesh);
-    Spatial.game.model.addStructureMesh(mesh);
-    lastMesh = mesh;
   }
   
-  // randomly orient structure
-  var degs = [
-    Spatial.Util.toRads(0),
-    Spatial.Util.toRads(90),
-    Spatial.Util.toRads(180),
-    Spatial.Util.toRads(270)
-  ];
-  this.cubeGroup.rotation = new THREE.Vector3(Spatial.Util.randVal(degs), Spatial.Util.randVal(degs), Spatial.Util.randVal(degs));
+  // default build
+  else{
+    
+    i = this.cubeLength;
+    while(i--) {
+      mesh = new Spatial.CubeMesh(color, this.size, this);
+    
+      if(lastMesh){
+        var emptyPos = this.getEmptyPositions(lastMesh.position);
+        var side = Spatial.Util.randVal(emptyPos);
+        mesh.position = side.position;
+      }
+    
+      this.cubeGroup.add(mesh);
+      this.cubes.push(mesh);
+      Spatial.game.model.addStructureMesh(mesh);
+      lastMesh = mesh;
+    }
   
-  this.center();
+    // randomly orient structure
+    var degs = [
+      Spatial.Util.toRads(0),
+      Spatial.Util.toRads(90),
+      Spatial.Util.toRads(180),
+      Spatial.Util.toRads(270)
+    ];
+    this.cubeGroup.rotation = new THREE.Vector3(Spatial.Util.randVal(degs), Spatial.Util.randVal(degs), Spatial.Util.randVal(degs));
+  
+    this.center();
+  }
+  
+  Spatial.game.events.add(Spatial.Events.ENTERFRAME, this.render, this);
 };
 
 Spatial.Structure.prototype.center = function() {
@@ -191,10 +194,9 @@ Spatial.Structure.prototype.equals = function(structure) {
   return true;
 };
 
-Spatial.Structure.prototype.onRender = function() {
+Spatial.Structure.prototype.render = function() {
   this.cubeGroup.rotation.x = this.cubeGroup.rotation.x + 0.005;
   this.cubeGroup.rotation.y = this.cubeGroup.rotation.y + 0.005;
-  //this.particleSystem.onRender();
 };
 
 Spatial.Structure.prototype.onClick = function(obj) {
@@ -208,9 +210,9 @@ Spatial.Structure.prototype.onClick = function(obj) {
 Spatial.Structure.prototype.select = function(obj) {
   this.selected = true;
   
-  TweenLite.to(this.position, 0.5, {
-    z: 25,
-    ease: Quad.easeOut
+  TweenLite.to(this.position, 2, {
+    y: 20,
+    ease: Quint.easeOut
   });
   
   this.events.publish(Spatial.Events.SELECTED, { target: this, data: obj });
@@ -219,9 +221,9 @@ Spatial.Structure.prototype.select = function(obj) {
 Spatial.Structure.prototype.deselect = function(obj) {
   this.selected = false;
   
-  TweenLite.to(this.position, 0.5, {
-    z: 0,
-    ease: Quad.easeOut
+  TweenLite.to(this.position, 1, {
+    y: 0,
+    ease: Quint.easeOut
   });
   
   this.events.publish(Spatial.Events.DESELECTED, { target: this, data: obj });

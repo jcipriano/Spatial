@@ -2,7 +2,7 @@ var Spatial = {};
 
 Spatial.Game = function() {
   
-  this.gameView;
+  this.view;
   this.effectsView
   this.model;
   this.events;
@@ -33,11 +33,10 @@ Spatial.Game.prototype.init = function() {
   this.model = new Spatial.GameModel();
   
   // game view
-  this.gameView = new Spatial.GameView('#canvas-holder');
-  this.gameView.start();
-  
-  // effects view
-  //this.effectsView = new Spatial.EffectsView(this.gameView);
+  this.view = new Spatial.GameView('#canvas-holder');
+
+  // controller
+  this.controller = new Spatial.GameController();
   
   this.enterframe();
 };

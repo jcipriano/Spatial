@@ -1,6 +1,6 @@
-Spatial.EffectsView = function(gameView) {
+Spatial.EffectsView = function(view) {
   
-  this.gameView = gameView;
+  this.view = view;
 	this.scene;
 	this.camera;
   
@@ -28,7 +28,7 @@ Spatial.EffectsView.prototype.build = function() {
 
 	var renderModelGlow = new THREE.RenderPass( this.scene, this.camera );
 
-	this.glowcomposer = new THREE.EffectComposer(this.gameView.renderer, renderTargetGlow);
+	this.glowcomposer = new THREE.EffectComposer(this.view.renderer, renderTargetGlow);
 	this.glowcomposer.addPass(renderModelGlow);
 	this.glowcomposer.addPass(hblur);
 	this.glowcomposer.addPass(vblur);
@@ -61,7 +61,7 @@ Spatial.EffectsView.prototype.build = function() {
 
 	finalshader.uniforms[ 'tGlow' ].texture = this.glowcomposer.renderTarget2;
 				
-	var renderModel = new THREE.RenderPass(this.gameView.scene, this.gameView.camera);
+	var renderModel = new THREE.RenderPass(this.view.scene, this.view.camera);
   
 	var finalPass = new THREE.ShaderPass(finalshader);
 	finalPass.needsSwap = true;
@@ -69,7 +69,7 @@ Spatial.EffectsView.prototype.build = function() {
 
 	var renderTarget = new THREE.WebGLRenderTarget(Spatial.game.viewport.width, Spatial.game.viewport.height, renderTargetParameters);
 
-	this.finalcomposer = new THREE.EffectComposer(this.gameView.renderer, renderTarget);
+	this.finalcomposer = new THREE.EffectComposer(this.view.renderer, renderTarget);
 	this.finalcomposer.addPass(renderModel);
 	this.finalcomposer.addPass(effectFXAA);
 	this.finalcomposer.addPass(finalPass);
@@ -80,7 +80,7 @@ Spatial.EffectsView.prototype.build = function() {
 };
 
 Spatial.EffectsView.prototype.render = function(camPos) {
-  this.camera.position = this.gameView.camera.position;
+  this.camera.position = this.view.camera.position;
   this.camera.lookAt(this.scene.position);
 
 	//this.glowcomposer.render(0.1);

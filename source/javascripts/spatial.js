@@ -1,6 +1,7 @@
 #= require_directory "./_libs"
 
 #= require "_spatial/_Application"
+#= require "_spatial/_GameController"
 #= require "_spatial/_GameView"
 #= require "_spatial/_EffectsView"
 #= require "_spatial/_GameModel"

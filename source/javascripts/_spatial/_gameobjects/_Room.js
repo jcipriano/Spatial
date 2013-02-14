@@ -47,9 +47,24 @@ Spatial.Room.prototype.build = function() {
     platform = this.platforms[i];
     platform.position.x = startX + spacing * i;
   }
-
+  
+  this.platformSets = [];
+  this.platformSets[1] = [this.platforms[2]];
+  this.platformSets[3] = [this.platforms[1], this.platforms[2], this.platforms[3]];
+  this.platformSets[5] = [this.platforms[0], this.platforms[1], this.platforms[2], this.platforms[3], this.platforms[4]];
+  
+  Spatial.game.events.add(Spatial.Events.ENTERFRAME, this.render, this);
 };
 
-Spatial.Room.prototype.onRender = function(camPos) {
+Spatial.Room.prototype.activate = function(length) {
+  this.activePlatformSet = this.platformSets[length];
+  var i = this.activePlatformSet.length;
+  while(i--){
+    this.activePlatformSet[i].on();
+  }
+  return this.activePlatformSet;
+};
+
+Spatial.Room.prototype.render = function(camPos) {
   //this.light.position = camPos;
 };

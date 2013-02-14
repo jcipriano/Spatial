@@ -36,16 +36,28 @@ Spatial.EventPublisher.prototype.add = function(event, callback, scope) {
   if (!this.events[event]){
     this.events[event] = [];
   }
-    
-  return this.events[event].push({ func: callback, obj: scope });
+  var obj = { func: callback, obj: scope };
+  return this.events[event].push(obj);
 };
   
-Spatial.EventPublisher.prototype.remove = function(event, callback) {
+Spatial.EventPublisher.prototype.remove = function(event, callback, scope) {
   var index, callbacks;
     
   if (this.events && this.events[event]) {
-    callback = this.events[event];
-    index = callbacks.indexOf(callback);
+    callbacks = this.events[event];
+    index = -1;
+    
+    for(var i = 0, len = callbacks.length; i < len; i++) {
+      var obj = callbacks[i];
+      if(obj.func === callback && obj.obj === scope){
+        index = i;
+        break;
+      }
+    }
+    
+    if(index === -1){
+      return false;
+    }
     return callbacks.splice(index, 1);
   }
 };
