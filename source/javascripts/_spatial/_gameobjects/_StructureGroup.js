@@ -30,16 +30,18 @@ Spatial.StructureGroup.prototype.generate = function(activePlatforms) {
   this.numOfUniques = this.length - Spatial.Util.randInt(2, this.length);
   this.clones = [];
   
-  var strLength = 5;
+  var strLength = 3;
   var strSize = 10;
   
   var str, lastStr;
   var i = 0, len = this.length;
+  var lengthPad = strLength > 3 ? -2 : 1; // padding will ensure that the structure is unique
   for(i; i<len; i++) {
     
     if(i < this.numOfUniques) {
       console.log('creating unique');
-      str = new Spatial.Structure(strLength, strSize);
+      str = new Spatial.Structure(strLength + lengthPad, strSize);
+      lengthPad = lengthPad == -1 ? 1 :  lengthPad + 1;
     }else{
       console.log('creating clone');
       str = lastStr ? lastStr.clone(true) :new Spatial.Structure(strLength, strSize);
