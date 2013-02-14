@@ -23,7 +23,7 @@ Spatial.Structure = function(length, size, autoBuild) {
   ];
   
   if(autoBuild !== false) {
-    this.build();
+    this.generate();
   }
 };
 
@@ -31,13 +31,10 @@ Spatial.Structure.prototype = new THREE.Object3D();
 Spatial.Structure.prototype.constructor = Spatial.Structure;
 Spatial.Structure.prototype.supr = THREE.Object3D.prototype;
 
-Spatial.Structure.prototype.build = function(cubes) {
+Spatial.Structure.prototype.generate = function(cubes) {
   
   this.cubeGroup = new THREE.Object3D();
   this.add(this.cubeGroup);
-  
-  //this.particleSystem = new Spatial.ParticleSystem();
-  //this.add(this.particleSystem)
   
   var mesh;
   var lastMesh;
@@ -52,7 +49,7 @@ Spatial.Structure.prototype.build = function(cubes) {
       mesh = cubes[i].clone(color, this);
       this.cubeGroup.add(mesh);
       this.cubes.push(mesh);
-      Spatial.game.model.addStructureMesh(mesh);
+      Spatial.game.model.addUiMesh(mesh);
     }
   }
   
@@ -71,7 +68,7 @@ Spatial.Structure.prototype.build = function(cubes) {
     
       this.cubeGroup.add(mesh);
       this.cubes.push(mesh);
-      Spatial.game.model.addStructureMesh(mesh);
+      Spatial.game.model.addUiMesh(mesh);
       lastMesh = mesh;
     }
   
@@ -88,6 +85,16 @@ Spatial.Structure.prototype.build = function(cubes) {
   }
   
   Spatial.game.events.add(Spatial.Events.ENTERFRAME, this.render, this);
+};
+
+Spatial.Structure.prototype.degenerate = function () {
+  
+  var i = this.cubeLength;
+  var mesh;
+  while(i--) {
+    mesh = this.cubes[i]
+    Spatial.game.model.removeUiMesh(mesh);
+  }
 };
 
 Spatial.Structure.prototype.center = function() {
@@ -170,7 +177,7 @@ Spatial.Structure.prototype.hasCubeAtPosition = function(position) {
 
 Spatial.Structure.prototype.clone = function() {
   var so = new Spatial.Structure(this.cubeLength, this.size, false);
-  so.build(this.cubes);
+  so.generate(this.cubes);
   return so;
 };
 

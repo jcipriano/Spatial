@@ -49,10 +49,10 @@ Spatial.GameView.prototype.start = function(callback) {
   this.scene.add(this.structureGroup);
   
   // events
-  Spatial.game.events.add(Spatial.Events.CLICK, this.onMouseClick, this);
   Spatial.game.events.add(Spatial.Events.MOVE, this.onMouseMove, this);
   Spatial.game.events.add(Spatial.Events.RESIZE, this.onWindowResized, this);
   Spatial.game.events.add(Spatial.Events.ENTERFRAME, this.render, this);
+  Spatial.game.events.add(Spatial.Events.CLICK, this.onMouseClick, this);
   
   // start
   this.onWindowResized(Spatial.game.viewport);
@@ -85,7 +85,7 @@ Spatial.GameView.prototype.onWindowResized = function(data) {
  * Mouse move
  **/
 Spatial.GameView.prototype.onMouseMove = function(data) {
-  TweenLite.to(this.camera.position, 1, { x: 225 * data.xP, y: -20 * data.yP, ease: Quad.easeOut }); 
+  TweenLite.to(this.camera.position, 1, { x: 30 * data.xP, y: -20 * data.yP, ease: Quad.easeOut }); 
 };
 
 /**
@@ -97,7 +97,7 @@ Spatial.GameView.prototype.onMouseClick = function(data) {
   this.projector.unprojectVector(vector, this.camera);
 
   var raycaster = new THREE.Raycaster(this.camera.position, vector.sub( this.camera.position ).normalize());
-  var intersects = raycaster.intersectObjects(Spatial.game.model.structureMeshes);
+  var intersects = raycaster.intersectObjects(Spatial.game.model.uiMeshes);
 
   if(intersects.length) {
     var obj = intersects[0];

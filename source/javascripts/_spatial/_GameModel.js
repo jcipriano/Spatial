@@ -1,5 +1,5 @@
 Spatial.GameModel = function(){
-  this.structureMeshes = [];
+  this.uiMeshes = [];
 };
 
 Spatial.GameModel.prototype.updateScore = function() {
@@ -18,22 +18,22 @@ Spatial.GameModel.prototype.resetLevel = function() {
 
 };
 
-Spatial.GameModel.prototype.addStructureMesh = function(obj) {
+Spatial.GameModel.prototype.addUiMesh = function(obj) {
   
-  if(this.structureMeshes.indexOf(obj) !== -1){
+  if(this.uiMeshes.indexOf(obj) !== -1){
     throw new Error("Object already in uiObjects.");
     return;
   }
   
-  this.structureMeshes.push(obj);
+  this.uiMeshes.push(obj);
 };
 
-Spatial.GameModel.prototype.removeStructureMesh = function(obj) {
+Spatial.GameModel.prototype.removeUiMesh = function(obj) {
   
-  if(this.structureMeshes.indexOf(obj) === -1){
+  if(this.uiMeshes.indexOf(obj) === -1){
     throw new Error("Object does not exist in uiObjects.");
     return;
   }
    
-  this.uiObjects.splice(this.structureMeshes.indexOf(obj), 1);
+  this.uiMeshes.splice(this.uiMeshes.indexOf(obj), 1);
 };

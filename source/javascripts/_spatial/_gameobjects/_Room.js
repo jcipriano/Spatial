@@ -3,6 +3,16 @@ Spatial.Room = function() {
   THREE.Object3D.call(this);
 
   this.platforms = [];
+
+  var wallColor = 0x000000;
+  
+	this.wallMaterial = new THREE.MeshPhongMaterial( { 
+    color: wallColor, 
+    ambient: wallColor,
+    specular: 0xFFFFFF,
+    shininess: 1,
+    side: THREE.BackSide
+  });
   
   this.build();
 };
@@ -13,15 +23,7 @@ Spatial.Room.prototype.supr = THREE.Object3D.prototype;
 
 Spatial.Room.prototype.build = function() {
   
-	var mat = new THREE.MeshPhongMaterial( { 
-    color: 0x000000, 
-    ambient: 0x000000,
-    specular: 0xFFFFFF,
-    shininess: 1,
-    side: THREE.BackSide
-  });
-  
-  this.cube = new THREE.Mesh(new THREE.CubeGeometry(400, 125, 500), mat);
+  this.cube = new THREE.Mesh(new THREE.CubeGeometry(400, 125, 500), this.wallMaterial);
   this.cube.position.z = 100;
 	this.add(this.cube);
   
@@ -57,6 +59,15 @@ Spatial.Room.prototype.build = function() {
 };
 
 Spatial.Room.prototype.activate = function(length) {
+  
+  var platform;
+  var i = 5;
+  while(i--){
+    platform = this.platforms[i]
+    platform.particleOff();
+    platform.off();
+  }
+  
   this.activePlatformSet = this.platformSets[length];
   var i = this.activePlatformSet.length;
   while(i--){

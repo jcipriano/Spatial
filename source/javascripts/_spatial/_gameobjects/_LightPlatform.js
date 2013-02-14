@@ -99,6 +99,11 @@ Spatial.LightPlatform.prototype.particleOn = function() {
 };
 
 Spatial.LightPlatform.prototype.particleOff = function() {
+  
+  if(!this.particleSystem){
+    return;
+  }
+  
   var that = this;
   TweenLite.to(this.particleSystem.material, 0.5, {
     opacity: 0,
