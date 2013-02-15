@@ -64,10 +64,6 @@ Spatial.LightPlatform.prototype.on = function() {
   TweenLite.to(this.top.lensOn.material, time, { opacity: 0.85, ease: Elastic.easeIn });
   TweenLite.to(this.bottom.lensOn.material, time, { opacity: 0.85, ease: Elastic.easeIn });
   
-  // light beams
-  TweenLite.to(this.top.lightBeam.material, time, { opacity: 0.5, ease: Elastic.easeIn });
-  TweenLite.to(this.bottom.lightBeam.material, time, { opacity: 0.5, ease: Elastic.easeIn });
-  
   // lights
   TweenLite.to(this.top.light, time, { intensity: 0.75, ease: Elastic.easeIn });
   TweenLite.to(this.bottom.light, time, { intensity: 0.75, ease: Elastic.easeIn });
@@ -81,10 +77,6 @@ Spatial.LightPlatform.prototype.off = function(instant) {
   // light lenses
   TweenLite.to(this.top.lensOn.material, time, obj);
   TweenLite.to(this.bottom.lensOn.material, time, obj);
-  
-  // light beams
-  TweenLite.to(this.top.lightBeam.material, time, obj);
-  TweenLite.to(this.bottom.lightBeam.material, time, obj);
   
   // lights
   TweenLite.to(this.top.light, time, obj);
@@ -109,6 +101,10 @@ Spatial.LightPlatform.prototype.particleOn = function() {
   if(!this.particleSystem){
     this.particulate();
   }
+
+  // light beams
+  TweenLite.to(this.top.lightBeam.material, 0.75, { opacity: 0.5, ease: Quad.easeIn });
+  TweenLite.to(this.bottom.lightBeam.material, 0.75, { opacity: 0.5, ease: Quad.easeIn });
   
   TweenLite.to(this.particleSystem.material, 0.5, {
     opacity: 0.85,
@@ -125,8 +121,14 @@ Spatial.LightPlatform.prototype.particleOff = function() {
     return;
   }
   
+  var time = 0.5;
+  
+  // light beams
+  TweenLite.to(this.top.lightBeam.material, time, { intensity: 0, opacity: 0, ease: Quad.easeOut });
+  TweenLite.to(this.bottom.lightBeam.material, time, { intensity: 0, opacity: 0, ease: Quad.easeOut });
+  
   var that = this;
-  TweenLite.to(this.particleSystem.material, 0.5, {
+  TweenLite.to(this.particleSystem.material, time, {
     opacity: 0,
     ease: Linear.easeOut,
     onComplete: function(){
@@ -184,6 +186,7 @@ Spatial.LightPlatform.prototype.buildPlatForm = function(verticalFlip) {
     fog: true
   }));
   var scale = 120;
+  //lightBeam.visible = false;
   lightBeam.scale.set(scale, verticalFlip ? -scale : scale, scale);
   lightBeam.position.y = 55;
   cylinder.add(lightBeam);

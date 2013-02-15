@@ -47,6 +47,8 @@ Spatial.Structure.prototype.generate = function(cubes) {
     i = cubes.length;
     while(i--) {
       mesh = cubes[i].clone(color, this);
+      mesh.show(i*0.25);
+      
       this.cubeGroup.add(mesh);
       this.cubes.push(mesh);
       Spatial.game.model.addUiMesh(mesh);
@@ -59,7 +61,8 @@ Spatial.Structure.prototype.generate = function(cubes) {
     i = this.cubeLength;
     while(i--) {
       mesh = new Spatial.CubeMesh(color, this.size, this);
-    
+      mesh.show(i*0.25);
+      
       if(lastMesh){
         var emptyPos = this.getEmptyPositions(lastMesh.position);
         var side = Spatial.Util.randVal(emptyPos);
