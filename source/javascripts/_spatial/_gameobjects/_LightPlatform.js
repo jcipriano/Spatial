@@ -57,17 +57,38 @@ Spatial.LightPlatform.prototype.particulate = function() {
 };
 
 Spatial.LightPlatform.prototype.on = function() {
-  this.bottom.lensOn.visible = this.top.lensOn.visible = true;
-  this.bottom.lensOff.visible = this.top.lensOff.visible = false;
-  this.bottom.lightBeam.visible = this.top.lightBeam.visible = true;
-  this.bottom.light.intensity = this.top.light.intensity = 0.75;
+  
+  var time = 0.75; 
+  
+  // light lenses
+  TweenLite.to(this.top.lensOn.material, time, { opacity: 0.85, ease: Elastic.easeIn });
+  TweenLite.to(this.bottom.lensOn.material, time, { opacity: 0.85, ease: Elastic.easeIn });
+  
+  // light beams
+  TweenLite.to(this.top.lightBeam.material, time, { opacity: 0.5, ease: Elastic.easeIn });
+  TweenLite.to(this.bottom.lightBeam.material, time, { opacity: 0.5, ease: Elastic.easeIn });
+  
+  // lights
+  TweenLite.to(this.top.light, time, { intensity: 0.75, ease: Elastic.easeIn });
+  TweenLite.to(this.bottom.light, time, { intensity: 0.75, ease: Elastic.easeIn });
 };
 
-Spatial.LightPlatform.prototype.off = function() {
-  this.bottom.lensOn.visible = this.top.lensOn.visible = false;
-  this.bottom.lensOff.visible = this.top.lensOff.visible = true;
-  this.bottom.lightBeam.visible = this.top.lightBeam.visible = false;
-  this.bottom.light.intensity = this.top.light.intensity = 0;
+Spatial.LightPlatform.prototype.off = function(instant) {
+  
+  var obj = { intensity: 0, opacity: 0, ease: Quad.easeOut };
+  var time = instant ? 0 : 0.75; 
+  
+  // light lenses
+  TweenLite.to(this.top.lensOn.material, time, obj);
+  TweenLite.to(this.bottom.lensOn.material, time, obj);
+  
+  // light beams
+  TweenLite.to(this.top.lightBeam.material, time, obj);
+  TweenLite.to(this.bottom.lightBeam.material, time, obj);
+  
+  // lights
+  TweenLite.to(this.top.light, time, obj);
+  TweenLite.to(this.bottom.light, time, obj);
 };
 
 Spatial.LightPlatform.prototype.render = function() {
@@ -138,9 +159,8 @@ Spatial.LightPlatform.prototype.buildPlatForm = function(verticalFlip) {
   var lensOn = new THREE.Mesh(new THREE.PlaneGeometry(45, 45, 2, 2), new THREE.MeshBasicMaterial({
     map: THREE.ImageUtils.loadTexture('images/textures/LightPlatform_on.png'),
     transparent: true,
-    opacity: 1
+    opacity: 0
   }));
-  lensOn.visible = false;
   lensOn.position.y = 2;
   lensOn.rotation.x = Spatial.Util.toRads(-90);
   cylinder.add(lensOn);
@@ -159,11 +179,11 @@ Spatial.LightPlatform.prototype.buildPlatForm = function(verticalFlip) {
     map: new THREE.ImageUtils.loadTexture('images/textures/LightPlatform_beam.png'),
     useScreenCoordinates: false,
     color: 0xFFFFFF,
-    opacity: 0.75,
+    transparent: true,
+    opacity: 0,
     fog: true
   }));
   var scale = 120;
-  lightBeam.visible = false;
   lightBeam.scale.set(scale, verticalFlip ? -scale : scale, scale);
   lightBeam.position.y = 55;
   cylinder.add(lightBeam);
