@@ -1,5 +1,9 @@
 Spatial.Events = {
   CLICK: 'click',
+  LOADED: 'loaded',
+  PLAY: 'play',
+  STOP: 'stop',
+  ERROR: 'error',
   MOVE: 'move',
   RESIZE: 'resize',
   SELECTED: 'selected',

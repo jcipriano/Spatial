@@ -1,6 +1,7 @@
 Spatial.GameModel = function(){
   this.uiMeshes = [];
   this.level = 0;
+  this.levelData = Spatial.Config.levels[this.level];
 };
 
 Spatial.GameModel.prototype.updateScore = function() {
@@ -12,7 +13,7 @@ Spatial.GameModel.prototype.clearScore = function() {
 };
 
 Spatial.GameModel.prototype.getLevelData = function(level) {
-  return Spatial.Config.levels[level ? level : this.level];
+  return level ? Spatial.Config.levels[level] : this.levelData;
 };
 
 Spatial.GameModel.prototype.getLevel = function() {
@@ -21,6 +22,7 @@ Spatial.GameModel.prototype.getLevel = function() {
 
 Spatial.GameModel.prototype.incrementLevel = function() {
   this.level = this.level + 1
+  this.levelData = Spatial.Config.levels[this.level];
 };
 
 Spatial.GameModel.prototype.resetLevel = function() {

@@ -45,7 +45,7 @@ Spatial.Config = {
     'cubeSize': 10,
     'cubeLength': 5,
     'audio': {
-      'intro': 'voice_level01',
+      'intro': 'voice_level02',
       'song': '',
     }
   },{
@@ -54,7 +54,7 @@ Spatial.Config = {
     'cubeSize': 10,
     'cubeLength': 7,
     'audio': {
-      'intro': 'voice_level01',
+      'intro': 'voice_level03',
       'song': '',
     }
   },{
@@ -63,7 +63,7 @@ Spatial.Config = {
     'cubeSize': 10,
     'cubeLength': 7,
     'audio': {
-      'intro': 'voice_level01',
+      'intro': 'voice_level04',
       'song': '',
     }
   },{
@@ -72,7 +72,7 @@ Spatial.Config = {
     'cubeSize': 10,
     'cubeLength': 9,
     'audio': {
-      'intro': 'voice_level01',
+      'intro': 'voice_level05',
       'song': '',
     }
   },{
@@ -81,7 +81,7 @@ Spatial.Config = {
     'cubeSize': 7,
     'cubeLength': 12,
     'audio': {
-      'intro': 'voice_level01',
+      'intro': 'voice_level06',
       'song': '',
     }
   },{
@@ -90,7 +90,7 @@ Spatial.Config = {
     'cubeSize': 7,
     'cubeLength': 15,
     'audio': {
-      'intro': 'voice_level01',
+      'intro': 'voice_level07',
       'song': '',
     }
   },{
@@ -99,7 +99,7 @@ Spatial.Config = {
     'cubeSize': 7,
     'cubeLength': 15,
     'audio': {
-      'intro': 'voice_level01',
+      'intro': 'voice_level08',
       'song': '',
     }
   },{
@@ -108,7 +108,7 @@ Spatial.Config = {
     'cubeSize': 5,
     'cubeLength': 20,
     'audio': {
-      'intro': 'voice_level01',
+      'intro': 'voice_level09',
       'song': '',
     }
   },{
@@ -117,7 +117,7 @@ Spatial.Config = {
     'cubeSize': 5,
     'cubeLength': 25,
     'audio': {
-      'intro': 'voice_level01',
+      'intro': 'voice_level10',
       'song': '',
     }
   }]

@@ -5,6 +5,8 @@
 #= require "_spatial/_GameView"
 #= require "_spatial/_EffectsView"
 #= require "_spatial/_GameModel"
+#= require "_spatial/_AudioTrack"
+#= require "_spatial/_AudioManager"
 #= require "_spatial/_Util"
 #= require "_spatial/_EventPublisher"
 

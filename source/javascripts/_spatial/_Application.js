@@ -35,6 +35,9 @@ Spatial.Game.prototype.init = function() {
   // game view
   this.view = new Spatial.GameView('#canvas-holder');
 
+  // audio manager
+  this.audio = new Spatial.AudioManager();
+
   // controller
   this.controller = new Spatial.GameController();
   
