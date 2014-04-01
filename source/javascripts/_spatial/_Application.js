@@ -34,6 +34,12 @@ Spatial.Game.prototype.init = function() {
   
   // game view
   this.view = new Spatial.GameView('#canvas-holder');
+  
+  // hud view
+  this.hud = new Spatial.HudView('#hud-view');
+
+  // game timer
+  this.timer = new Spatial.GameTimer();
 
   // audio manager
   this.audio = new Spatial.AudioManager();

@@ -1,0 +1,29 @@
+#hud-view {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100px;
+	color: #FFF;
+	font-size: 42px;
+
+	#level {
+		font-weight: 400;
+	}
+
+	#clock {
+		font-weight: 300;
+	}
+
+	.warning1 {
+		color: #e5e500;
+	}
+
+	.warning2 {
+		color: #e59400;
+	}
+
+	.warning3 {
+		color: #ff0000;
+	}
+}

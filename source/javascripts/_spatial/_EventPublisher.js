@@ -10,7 +10,14 @@ Spatial.Events = {
   DESELECTED: 'deselected',
   SUCCESS: 'success',
   FAILURE: 'failure',
-  ENTERFRAME: 'enterframe'
+  ENTERFRAME: 'enterframe',
+
+  TIMER_TICK: 'timer_tick',
+  TIMER_STOP: 'timer_stop',
+  TIMER_START: 'timer_start',
+
+  LEVEL_START: 'level_start',
+  LEVEL_END: 'level_end'
 };
 
 Spatial.EventPublisher = function() {

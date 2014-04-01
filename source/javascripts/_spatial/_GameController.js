@@ -23,19 +23,33 @@ Spatial.GameController.prototype.audioLoaded = function() {
 };
 
 Spatial.GameController.prototype.levelSuccess = function() {
+  Spatial.game.timer.stop();
+
+  console.log("GET TIME: ", Spatial.game.timer.getTime());
+
+  Spatial.game.events.publish(Spatial.Events.LEVEL_START, { level: Spatial.game.model.getLevel() } );
+
   Spatial.game.model.incrementLevel();
+
   this.startNextLevel();
 };
 
 Spatial.GameController.prototype.startNextLevel = function() {
   
   console.log(Spatial.game.model.levelData.name);
-  
+
   var that = this;
   setTimeout(function(){
     that.activePlatforms = Spatial.game.view.room.activate();
     Spatial.game.view.structureGroup.generate(that.activePlatforms);
     Spatial.game.audio.play(Spatial.game.model.levelData.audio.intro);
+    
+    setTimeout(function() {
+      Spatial.game.timer.start();
+    }, 2000);
+
+    Spatial.game.events.publish(Spatial.Events.LEVEL_START, { level: Spatial.game.model.getLevel() } );
+
   }, 1000);
 };
 
